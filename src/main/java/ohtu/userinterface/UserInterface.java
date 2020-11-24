@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import ohtu.Youtube;
 
 /**
  * A class for the application UI.
@@ -58,8 +59,10 @@ public class UserInterface {
                                        + " | ISBN: " + book.getIsbn());
                     break;
                 case "youtube":
-                    // TODO
-                    System.out.println("YouTube");
+                    // TODO: Call for database here. Something like this db.store(getBook());
+                    // For now, temp print:
+                    Youtube youtube = getYoutube();
+                    System.out.println(youtube);
                     break;
                 default:
                     System.out.println("No such command exists. Enter 'help' to get help.");
@@ -110,6 +113,30 @@ public class UserInterface {
         } catch (NumberFormatException ignored) {}
 
         return new Book(data.get("title"), data.get("author"), year, pages, data.get("isbn"));
+    }
+    
+    protected Youtube getYoutube() throws IOException{
+
+        System.out.println("Enter url*: ");
+        String url = br.readLine();
+        if (url.isBlank()) {
+            System.out.println("url cannot be blank.");
+            return null;
+        }
+
+        System.out.println("Enter title*: ");
+        String title = br.readLine();
+        if (title.isBlank()) {
+            title = "";
+        }
+        
+        System.out.println("Enter description*: ");
+        String description = br.readLine();
+        if (description.isBlank()) {
+            description = "";
+        }
+
+        return new Youtube(url, title, description);
     }
 
     /**
