@@ -21,16 +21,15 @@ public class DatabaseTest {
 
     @Test
     public void testGetConnection() throws Exception {
-        assertEquals(false, conn.isClosed());
+        assertFalse(conn.isClosed());
         conn.close();
-        assertEquals(true, conn.isClosed());
+        assertTrue(conn.isClosed());
     }
     
     @Test
     public void noSchemaWithoutDatabase() throws ClassNotFoundException, SQLException {
         Database database2 = new Database("jdbc:sqlite:eiole.db");
         conn = database2.getConnection();
-        assertEquals(null, conn.getSchema());
+        assertNull(conn.getSchema());
     }
-
 }

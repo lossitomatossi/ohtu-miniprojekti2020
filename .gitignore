@@ -3,3 +3,11 @@
 
 # Ignore Gradle build output directory
 build
+
+# IDE Specific
+.idea
+bin
+.settings
+.classpath
+.project
+nbproject

@@ -16,7 +16,6 @@ import org.junit.Test;
  */
 public class YoutubeTest {
     Youtube youtube;
-    
 
     @Before
     public void setUp() {
