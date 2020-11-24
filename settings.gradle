@@ -15,4 +15,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'lukuvinkkikirjasto'
+rootProject.name = 'fx-testing'
