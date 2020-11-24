@@ -119,10 +119,10 @@ public class UserInterface {
 
     protected Youtube getYoutube() throws IOException{
 
-        System.out.println("Enter url*: ");
+        System.out.println("Enter URL*: ");
         String url = br.readLine();
         if (url.isBlank()) {
-            System.out.println("url cannot be blank.");
+            System.out.println("URL cannot be blank.");
             return null;
         }
 
