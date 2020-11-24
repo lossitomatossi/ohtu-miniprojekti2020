@@ -1,10 +1,9 @@
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'application'
     id 'jacoco'
+    id 'checkstyle'
 }
-
-apply plugin: 'java'
-apply plugin: 'application'
 
 mainClassName = 'ohtu.Main'
 
@@ -17,11 +16,29 @@ javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.enabled true
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: ['ohtu/Main.class'])
+        }))
+    }
+}
+
 repositories {
     jcenter()
 }
 
+project.ext {
+    cucumberVersion = '6.9.0'
+}
+
 dependencies {
+    testCompile 'io.cucumber:cucumber-java:' + cucumberVersion
+    testCompile 'io.cucumber:cucumber-junit:' + cucumberVersion
     testImplementation 'junit:junit:4.13.1'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.0'
     // javafx
