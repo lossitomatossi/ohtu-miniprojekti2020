@@ -8,44 +8,46 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * A class for the application UI.
+ * Class for the application UI
  */
 public class UserInterface {
 
-    BufferedReader br;
+    private final BufferedReader br;
 
-    /**
-     * Constructor
-     */
     public UserInterface() {
         br = new BufferedReader(new InputStreamReader(System.in));
     }
 
     /**
      * Constructor for testing
+     *
+     * @param br Mock command-line reader
      */
     protected UserInterface(BufferedReader br) {
         this.br = br;
     }
 
     /**
-     * Launches the application's Command Line UI
+     * Launches the application's command-line UI
      */
     public void commandLine() throws IOException {
-        System.out.println("Get help by entering 'help'.");
-        System.out.println("Close the program by entering 'exit'.");
+        String help = "exit - Close the program.\n"
+                      + "book - Save a book recommendation.\n"
+                      + "youtube - Save an YouTube recommendation.";
+
+        System.out.println("Get help by entering 'help' or close the program by entering 'exit'.");
 
         while (true) {
             System.out.print("Enter command: ");
             String command = br.readLine();
 
-            switch(command) {
+            switch (command) {
                 case "exit":
                     System.out.println("Exiting..");
                     br.close();
                     return;
                 case "help":
-                    System.out.println(getHelp());
+                    System.out.println(help);
                     break;
                 case "book":
                     // TODO: Call for database here. Something like this db.store(getBook());
@@ -68,8 +70,12 @@ public class UserInterface {
     }
 
     /**
+     * Gets the data from user for the book recommendation
+     *
      * TODO: Possibly a single method, and pass the type of the entry as argument
      * like "YouTube", "Book" or Tip:Youtube, Tip:Book
+     *
+     * @return Book object or null
      */
     protected Book getBook() throws IOException {
         Map<String, String> data = new HashMap<>();
@@ -110,14 +116,5 @@ public class UserInterface {
         } catch (NumberFormatException ignored) {}
 
         return new Book(data.get("title"), data.get("author"), year, pages, data.get("isbn"));
-    }
-
-    /**
-     * Available commands.
-     */
-    private String getHelp() {
-        return "exit - Close the program.\n"
-                + "book - Save a book recommendation.\n"
-                + "youtube - Save an YouTube recommendation.";
     }
 }
