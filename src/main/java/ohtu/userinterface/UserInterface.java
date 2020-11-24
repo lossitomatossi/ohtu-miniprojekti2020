@@ -1,11 +1,11 @@
 package ohtu.userinterface;
 
 import ohtu.Book;
+import ohtu.Youtube;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 /**
  * Class for the application UI
@@ -31,6 +31,7 @@ public class UserInterface {
      * Launches the application's command-line UI
      */
     public void commandLine() throws IOException {
+
         String help = "exit - Close the program.\n"
                       + "book - Save a book recommendation.\n"
                       + "youtube - Save an YouTube recommendation.";
@@ -60,8 +61,10 @@ public class UserInterface {
                                        + " | ISBN: " + book.getIsbn());
                     break;
                 case "youtube":
-                    // TODO
-                    System.out.println("YouTube");
+                    // TODO: Call for database here. Something like this db.store(getBook());
+                    // For now, temp print:
+                    Youtube youtube = getYoutube();
+                    System.out.println(youtube);
                     break;
                 default:
                     System.out.println("No such command exists. Enter 'help' to get help.");
@@ -78,7 +81,6 @@ public class UserInterface {
      * @return Book object or null
      */
     protected Book getBook() throws IOException {
-        Map<String, String> data = new HashMap<>();
 
         System.out.println("Enter title*: ");
         String title = br.readLine();
@@ -86,7 +88,6 @@ public class UserInterface {
             System.out.println("Title cannot be blank.");
             return null;
         }
-        data.put("title", title);
 
         System.out.println("Enter author*: ");
         String author = br.readLine();
@@ -94,27 +95,49 @@ public class UserInterface {
             System.out.println("Author cannot be blank.");
             return null;
         }
-        data.put("author", author);
 
         System.out.println("Enter year: ");
-        data.put("year", br.readLine());
+        int year = -1;
+        try {
+            year = Integer.parseInt(br.readLine());
+        } catch (NumberFormatException ignored) {}
 
         System.out.println("Enter pages: ");
-        data.put("pages", br.readLine());
+        int pages = -1;
+        try {
+            pages = Integer.parseInt(br.readLine());
+        } catch (NumberFormatException ignored) {}
 
         System.out.println("Enter ISBN: ");
-        data.put("isbn", br.readLine());
+        String isbn = br.readLine();
+        if (isbn.isBlank()) {
+            isbn = "";
+        }
 
-        int year = -1, pages = -1;
+        return new Book(title, author, year, pages, isbn);
+    }
 
-        try {
-            year = Integer.parseInt(data.get("year"));
-        } catch (NumberFormatException ignored) {}
+    protected Youtube getYoutube() throws IOException{
 
-        try {
-            pages = Integer.parseInt(data.get("pages"));
-        } catch (NumberFormatException ignored) {}
+        System.out.println("Enter url*: ");
+        String url = br.readLine();
+        if (url.isBlank()) {
+            System.out.println("url cannot be blank.");
+            return null;
+        }
 
-        return new Book(data.get("title"), data.get("author"), year, pages, data.get("isbn"));
+        System.out.println("Enter title*: ");
+        String title = br.readLine();
+        if (title.isBlank()) {
+            title = "";
+        }
+
+        System.out.println("Enter description*: ");
+        String description = br.readLine();
+        if (description.isBlank()) {
+            description = "";
+        }
+
+        return new Youtube(url, title, description);
     }
 }
