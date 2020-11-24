@@ -7,6 +7,10 @@ apply plugin: 'application'
 
 mainClassName = 'ohtu.Main'
 
+run {
+    standardInput = System.in
+}
+
 javafx {
     version = '11'
     modules = [ 'javafx.controls', 'javafx.fxml' ]
@@ -17,12 +21,14 @@ repositories {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    testCompile "org.testfx:testfx-core:4.0.+"
-    testCompile "org.testfx:testfx-junit:4.0.+"    
-    testCompile "org.testfx:openjfx-monocle:jdk-11+26"
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.0'
+    // javafx
+    testImplementation "org.testfx:testfx-core:4.0.+"
+    testImplementation "org.testfx:testfx-junit:4.0.+"
+    testImplementation "org.testfx:openjfx-monocle:jdk-11+26"
     // database connection managed with sqlite
-    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
 }
 
 test {
