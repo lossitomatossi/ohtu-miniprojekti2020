@@ -18,7 +18,8 @@ import org.junit.Test;
  * @author mahi
  */
 public class DbCommandsTest {
-DbCommands dbc;
+
+    DbCommands dbc;
 
     public DbCommandsTest() {
     }
@@ -34,7 +35,7 @@ DbCommands dbc;
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
 
-dbc = new DbCommands("jdbc:sqlite:testaus.db");
+        dbc = new DbCommands("jdbc:sqlite:testaus.db");
     }
 
     @After
@@ -48,27 +49,21 @@ dbc = new DbCommands("jdbc:sqlite:testaus.db");
     //
     // @Test
     // public void hello() {}
-
-
     @Test
-    public void kirjaOlionVoiLisata()throws SQLException, ClassNotFoundException{
-
+    public void kirjaOlionVoiLisata() throws SQLException, ClassNotFoundException {
 
         Book b = new Book("nimi", "kirjoittaja", 1, 2, "abc");
         dbc.add(b);
         assertEquals(dbc.BookTable(), "nimi kirjoittaja 1 2 abc");
-        
-
-
 
     }
 
     @Test
-    public void YoutubeOlionVoiLisata()throws SQLException, ClassNotFoundException{
+    public void YoutubeOlionVoiLisata() throws SQLException, ClassNotFoundException {
         Youtube y = new Youtube("aaa", "title", "bbb");
         dbc.add(y);
 
-        assertEquals(dbc.YoutubeTable(),"aaa title bbb");
+        assertEquals(dbc.YoutubeTable(), "aaa title bbb");
 
     }
 
