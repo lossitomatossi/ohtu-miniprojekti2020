@@ -54,11 +54,13 @@ public class UserInterface {
                     // TODO: Call for database here. Something like this db.store(getBook());
                     // For now, temp print:
                     Book book = getBook();
+                    if(book != null) {
                     System.out.println("\nTitle: " + book.getName()
                                        + " | Author: " + book.getWriter()
                                        + " | Year: " + book.getYear()
                                        + " | Pages: " + book.getPages()
                                        + " | ISBN: " + book.getIsbn());
+                    }
                     break;
                 case "youtube":
                     // TODO: Call for database here. Something like this db.store(getBook());
