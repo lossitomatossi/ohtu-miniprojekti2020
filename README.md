@@ -6,3 +6,4 @@
 
 [Definition of done](documentation/dod.md)
 
+[Hyväksymiskriteerit](https://github.com/lossitomatossi/ohtu-miniprojekti2020/tree/main/src/test/resources/lukuvinkkikirjasto)
