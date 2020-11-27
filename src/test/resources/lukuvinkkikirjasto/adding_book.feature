@@ -1,4 +1,4 @@
-Feature: As a user I can add a new book title to the list
+Feature: As a user I can add a new book to the list
 
     Scenario: user can add a new book by giving title and writer
         Given command book is selected
