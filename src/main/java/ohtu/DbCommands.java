@@ -18,13 +18,12 @@ import ohtu.database.Database;
  */
 public class DbCommands {
 
-    private Database database;
-    private Connection db;
-    private Statement s;
+    private final Connection db;
+    private final Statement s;
     private String databaseAddress;
 
     public DbCommands(String databaseAddress) throws SQLException, ClassNotFoundException {
-        database = new Database(databaseAddress);
+        Database database = new Database(databaseAddress);
         db = database.getConnection();
         s = db.createStatement();
         createTables();
@@ -54,8 +53,8 @@ public class DbCommands {
     private void addBook(Book b) throws SQLException {
         PreparedStatement p = db.prepareStatement("INSERT INTO Books(name,writer, year, pages, isbn) VALUES (?,?,?,?,?)");
 
-        p.setString(1, b.getName());
-        p.setString(2, b.getWriter());
+        p.setString(1, b.getTitle());
+        p.setString(2, b.getAuthor());
         p.setInt(3, b.getYear());
         p.setInt(4, b.getPages());
         p.setString(5, b.getIsbn());
@@ -76,35 +75,34 @@ public class DbCommands {
     }
 
     public String BookTable() {
-        String book = "";
+        StringBuilder book = new StringBuilder();
 
         try {
             ResultSet r = s.executeQuery("SELECT * FROM Books");
 
             while (r.next()) {
-                book += (r.getString("name") + " " + r.getString("writer") + " " + r.getInt("year") + " " + r.getInt("pages") + " " + r.getString("isbn"));
+                book.append(r.getString("name")).append(" ").append(r.getString("writer"))
+                        .append(" ").append(r.getInt("year")).append(" ").append(r.getInt("pages"))
+                        .append(" ").append(r.getString("isbn"));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {}
 
-        }
-
-        return book;
+        return book.toString();
     }
 
     public String YoutubeTable() {
-        String Youtube = "";
+        StringBuilder Youtube = new StringBuilder();
 
         try {
             ResultSet r = s.executeQuery("SELECT * FROM Youtube_links");
 
             while (r.next()) {
-                Youtube += (r.getString("url") + " " + r.getString("title") + " " + r.getString("description"));
+                Youtube.append(r.getString("url")).append(" ").append(r.getString("title"))
+                        .append(" ").append(r.getString("description"));
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {}
 
-        }
-
-        return Youtube;
+        return Youtube.toString();
     }
 
     public void removeTable(String name) throws SQLException {

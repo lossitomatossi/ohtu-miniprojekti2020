@@ -18,7 +18,7 @@ public class BookTest {
 
     @Test
     public void constructorCreatesBook() {
-        assertEquals("Aapinen", book.getName());
+        assertEquals("Aapinen", book.getTitle());
     }
     
     @Test

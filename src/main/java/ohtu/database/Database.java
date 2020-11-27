@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Database {
 
-    private String databaseAddress;
+    private final String databaseAddress;
 
     /**
      *
@@ -26,7 +26,7 @@ public class Database {
     public Connection getConnection() throws SQLException {
         try {
             Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException ignored) {
         }
         return DriverManager.getConnection(databaseAddress);
     }

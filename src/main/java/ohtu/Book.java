@@ -2,39 +2,39 @@ package ohtu;
 
 public class Book {
 
-    private String name;
-    private String writer;
+    private String title;
+    private String author;
     private int year;
     private int pages;
     private String isbn;
 
-    public Book(String name, String writer) {
-        this.name = name;
-        this.writer = writer;
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
     }
     
-    public Book(String name, String writer, int year, int pages, String isbn) {
-        this.name = name;
-        this.writer = writer;
+    public Book(String title, String author, int year, int pages, String isbn) {
+        this.title = title;
+        this.author = author;
         this.year = year;
         this.pages = pages;
         this.isbn = isbn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getAuthor() {
+        return author;
     }
 
     public void setYear(int year) {
@@ -59,5 +59,14 @@ public class Book {
 
     public String getIsbn() {
         return isbn;
+    }
+
+    @Override
+    public String toString() {
+        return "Title: " + title
+                + " | Author: " + author
+                + " | Year: " + year
+                + " | Pages: " + pages
+                + " | ISBN: " + isbn;
     }
 }

@@ -34,8 +34,7 @@ public class DbCommandsTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-
-        dbc = new DbCommands("jdbc:sqlite:testaus.db");
+        dbc = new DbCommands("jdbc:sqlite:testing.db");
     }
 
     @After
@@ -50,7 +49,7 @@ public class DbCommandsTest {
     // @Test
     // public void hello() {}
     @Test
-    public void kirjaOlionVoiLisata() throws SQLException, ClassNotFoundException {
+    public void kirjaOlionVoiLisata() throws SQLException {
 
         Book b = new Book("nimi", "kirjoittaja", 1, 2, "abc");
         dbc.add(b);
@@ -59,7 +58,7 @@ public class DbCommandsTest {
     }
 
     @Test
-    public void YoutubeOlionVoiLisata() throws SQLException, ClassNotFoundException {
+    public void YoutubeOlionVoiLisata() throws SQLException {
         Youtube y = new Youtube("aaa", "title", "bbb");
         dbc.add(y);
 

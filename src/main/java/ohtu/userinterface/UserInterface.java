@@ -1,11 +1,13 @@
 package ohtu.userinterface;
 
 import ohtu.Book;
+import ohtu.DbCommands;
 import ohtu.Youtube;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 /**
  * Class for the application UI
@@ -13,9 +15,13 @@ import java.io.InputStreamReader;
 public class UserInterface {
 
     private final BufferedReader br;
+    private DbCommands db;
+    private final boolean mockUI;
 
-    public UserInterface() {
+    public UserInterface(String dbName) throws SQLException, ClassNotFoundException {
         br = new BufferedReader(new InputStreamReader(System.in));
+        db = new DbCommands(dbName);
+        mockUI = false;
     }
 
     /**
@@ -25,12 +31,13 @@ public class UserInterface {
      */
     protected UserInterface(BufferedReader br) {
         this.br = br;
+        mockUI = true;
     }
 
     /**
      * Launches the application's command-line UI
      */
-    public void commandLine() throws IOException {
+    public void commandLine() throws IOException, SQLException {
 
         String help = "exit - Close the program.\n"
                       + "book - Save a book recommendation.\n"
@@ -51,22 +58,26 @@ public class UserInterface {
                     System.out.println(help);
                     break;
                 case "book":
-                    // TODO: Call for database here. Something like this db.store(getBook());
-                    // For now, temp print:
                     Book book = getBook();
-                    if(book != null) {
-                    System.out.println("\nTitle: " + book.getName()
-                                       + " | Author: " + book.getWriter()
-                                       + " | Year: " + book.getYear()
-                                       + " | Pages: " + book.getPages()
-                                       + " | ISBN: " + book.getIsbn());
+                    if (book != null) {
+                        if (mockUI) {
+                            System.out.println(book);
+                        } else {
+                            db.add(book);
+                            System.out.println("Book added successfully!");
+                        }
                     }
                     break;
                 case "youtube":
-                    // TODO: Call for database here. Something like this db.store(getBook());
-                    // For now, temp print:
                     Youtube youtube = getYoutube();
-                    System.out.println(youtube);
+                    if (youtube != null) {
+                        if (mockUI) {
+                            System.out.println(youtube);
+                        } else {
+                            db.add(youtube);
+                            System.out.println("YouTube link added successfully!");
+                        }
+                    }
                     break;
                 default:
                     System.out.println("No such command exists. Enter 'help' to get help.");

@@ -56,8 +56,12 @@ public class Youtube {
         this.description = description;
     }
     
-    @Override public String toString() {
-        return "url: " + this.url + "\ntitle: " + this.title + "\ndate added: " + this.date + "\ndescription: " + this.description;
+    @Override
+    public String toString() {
+        return "URL: " + url
+                + " | Title: " + title
+                + " | Date added: " + date
+                + " | Description: " + description;
     }
 }
 

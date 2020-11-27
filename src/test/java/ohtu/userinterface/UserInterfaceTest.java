@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.SQLException;
 
 import org.mockito.Mockito;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
@@ -18,7 +19,7 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 public class UserInterfaceTest {
 
     @Test
-    public void correctErrorWhenUnknownCommandWithSuccessfulExit() throws IOException {
+    public void correctErrorWhenUnknownCommandWithSuccessfulExit() throws IOException, SQLException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 

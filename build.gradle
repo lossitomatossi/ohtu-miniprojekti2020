@@ -7,6 +7,12 @@ plugins {
 
 mainClassName = 'ohtu.Main'
 
+jar {
+    manifest {
+        attributes 'Main-Class':'ohtu.Main'
+    }
+}
+
 run {
     standardInput = System.in
 }

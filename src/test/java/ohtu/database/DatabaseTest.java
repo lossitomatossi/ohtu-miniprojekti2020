@@ -14,7 +14,7 @@ public class DatabaseTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        databaseAddress = "jdbc:sqlite:turha.db";
+        databaseAddress = "jdbc:sqlite:useless.db";
         database = new Database(databaseAddress);
         conn = database.getConnection();
     }
@@ -27,8 +27,8 @@ public class DatabaseTest {
     }
     
     @Test
-    public void noSchemaWithoutDatabase() throws ClassNotFoundException, SQLException {
-        Database database2 = new Database("jdbc:sqlite:eiole.db");
+    public void noSchemaWithoutDatabase() throws SQLException, ClassNotFoundException {
+        Database database2 = new Database("jdbc:sqlite:empty.db");
         conn = database2.getConnection();
         assertNull(conn.getSchema());
     }

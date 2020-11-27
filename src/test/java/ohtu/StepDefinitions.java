@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.sql.SQLException;
 import java.util.HashMap;
 import ohtu.userinterface.UserInterface;
 import org.junit.After;
@@ -39,7 +40,7 @@ public class StepDefinitions {
     }
 
     @When("user enters book title {string} and writer {string}")
-    public void userEntersBookTitleAndWriter(String title, String writer) throws IOException {
+    public void userEntersBookTitleAndWriter(String title, String writer) throws IOException, SQLException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn(title)
@@ -58,7 +59,7 @@ public class StepDefinitions {
     }
 
     @When("user leaves book title blank")
-    public void userLeavesTitleBlank() throws IOException {
+    public void userLeavesTitleBlank() throws IOException, SQLException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn("")
@@ -69,7 +70,7 @@ public class StepDefinitions {
     }
 
     @When("user enters book title {string} but leaves writer blank")
-    public void userEntersBookTitleButLeavesWriterBlank(String title) throws IOException {
+    public void userEntersBookTitleButLeavesWriterBlank(String title) throws IOException, SQLException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn(title)
@@ -80,7 +81,7 @@ public class StepDefinitions {
     }
 
     // Helper methods
-    private void runApp() throws IOException {
+    private void runApp() throws IOException, SQLException {
         UserInterface app = new UserInterface(br) {
         };
         app.commandLine();
