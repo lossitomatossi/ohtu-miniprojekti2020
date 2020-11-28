@@ -81,6 +81,39 @@ public class UserInterfaceTest {
         assertTrue(actualOutput.contains("Title cannot be blank."));
     }
 
+    @Test
+    public void printedCorrectListings() throws IOException, SQLException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("list", "book", "exit");
+
+        UserInterface app = new UserInterface(br);
+        app.commandLine();
+
+        String actualOutput = new String(output.toByteArray());
+
+        assertTrue(actualOutput.contains("List of books:"));
+    }
+
+    @Test
+    public void printedCorrectSearchResults() throws IOException, SQLException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("search", "book", "test", "exit");
+
+        UserInterface app = new UserInterface(br);
+        app.commandLine();
+
+        String actualOutput = new String(output.toByteArray());
+
+        assertTrue(actualOutput.contains("Founds items:"));
+    }
+
+
     @After
     public void returnSystem() {
         System.setOut(System.out);

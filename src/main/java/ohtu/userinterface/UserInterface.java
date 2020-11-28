@@ -172,13 +172,18 @@ public class UserInterface {
     }
 
     /**
-     * Lists all objects of the specified class in a formatted manner
+     * Lists all objects of the specified category in a formatted manner
      *
-     * @param o String that represents the object which the user wants as a list
-     * @return formatted String of all items of the specified class
+     * @param o String that represents the category which the user wants as a list
+     * @return formatted String of all items of the specified category
      */
     protected String list(String o) {
-        return "List of items";
+        if (o.toLowerCase().equals("book")) {
+            return "List of books:";
+        } else if (o.toLowerCase().equals("youtube")) {
+            return "List of YouTube links";
+        }
+        return "No such category.";
     }
 
     /**
@@ -189,7 +194,7 @@ public class UserInterface {
      * @return formatted String of found items
      */
     protected String search(Object o, String searchTerm) {
-        return "Founds items";
+        return "Founds items:";
     }
 
     /**
