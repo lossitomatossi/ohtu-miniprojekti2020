@@ -94,7 +94,7 @@ public class UserInterfaceTest {
 
         String actualOutput = new String(output.toByteArray());
 
-        assertTrue(actualOutput.contains("List of books:"));
+        assertTrue(actualOutput.contains("Title | Author | Year | Pages | ISBN"));
     }
 
     @Test

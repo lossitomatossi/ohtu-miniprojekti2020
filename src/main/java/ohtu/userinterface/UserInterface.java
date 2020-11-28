@@ -178,10 +178,14 @@ public class UserInterface {
      * @return formatted String of all items of the specified category
      */
     protected String list(String o) {
+        if (mockUI) {
+            return  "Title | Author | Year | Pages | ISBN";
+        }
+
         if (o.toLowerCase().equals("book")) {
-            return "List of books:";
+            return "Title | Author | Year | Pages | ISBN\n" + db.BookTable();
         } else if (o.toLowerCase().equals("youtube")) {
-            return "List of YouTube links";
+            return "URL | Title | Date Added | Description\n" + db.YoutubeTable();
         }
         return "No such category.";
     }
