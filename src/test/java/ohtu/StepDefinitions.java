@@ -42,6 +42,12 @@ public class StepDefinitions {
 
     }
 
+    @Given("command youtube is selected")
+    public void commandYoutubeSelected() throws IOException {
+        inputs.put("commandYoutube", "youtube");
+
+    }
+
     @When("user enters book title {string} and writer {string}")
     public void userEntersBookTitleAndWriter(String title, String writer) throws IOException, SQLException {
         when(br.readLine())
@@ -53,12 +59,16 @@ public class StepDefinitions {
         runApp();
     }
 
-    @Then("system will respond with {string}")
-    public void systemWillRespondWith(String expectedOutput) {
-        //For debugging
-//        System.setOut(standardOut);
-//        System.out.println(outputStreamCaptor);
-        assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
+    @When("user enters youtube url {string} and title {string}")
+    public void userEntersYoutubeURLAndTitle(String url, String title) throws IOException, SQLException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandYoutube"))
+                .thenReturn(url)
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
     }
 
     @When("user leaves book title blank")
@@ -69,7 +79,16 @@ public class StepDefinitions {
                 .thenReturn(inputs.get("commandExit"));
 
         runApp();
+    }
 
+    @When("user leaves youtube url blank")
+    public void userLeavesURLBlank() throws IOException, SQLException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandYoutube"))
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
     }
 
     @When("user enters book title {string} but leaves writer blank")
@@ -81,6 +100,14 @@ public class StepDefinitions {
                 .thenReturn(inputs.get("commandExit"));
 
         runApp();
+    }
+
+    @Then("system will respond with {string}")
+    public void systemWillRespondWith(String expectedOutput) {
+        //For debugging
+        System.setOut(standardOut);
+        System.out.println(outputStreamCaptor);
+        assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
     }
 
     // Helper methods

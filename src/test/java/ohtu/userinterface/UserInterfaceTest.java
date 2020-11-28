@@ -87,7 +87,7 @@ public class UserInterfaceTest {
         System.setOut(new PrintStream(output));
 
         BufferedReader br = Mockito.mock(BufferedReader.class);
-        Mockito.when(br.readLine()).thenReturn("list", "book", "exit");
+        Mockito.when(br.readLine()).thenReturn("list", "book", "list", "youtube", "exit");
 
         UserInterface app = new UserInterface(br);
         app.commandLine();

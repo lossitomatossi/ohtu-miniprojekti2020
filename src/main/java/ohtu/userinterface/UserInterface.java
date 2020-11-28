@@ -74,7 +74,7 @@ public class UserInterface {
                     break;
                 case "3":
                 case "youtube":
-                    msg = store(getBook()) ?
+                    msg = store(getYoutube()) ?
                             "Youtube link added successfully!" : "There was a problem on adding an YouTube link.";
                     break;
                 case "4":
