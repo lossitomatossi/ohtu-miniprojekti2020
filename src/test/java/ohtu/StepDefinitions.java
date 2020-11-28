@@ -1,16 +1,19 @@
 package ohtu;
 
+import ohtu.userinterface.UserInterface;
+
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
-import ohtu.userinterface.UserInterface;
+
 import org.junit.After;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -82,8 +85,7 @@ public class StepDefinitions {
 
     // Helper methods
     private void runApp() throws IOException, SQLException {
-        UserInterface app = new UserInterface(br) {
-        };
+        UserInterface app = new UserInterface(br) {};
         app.commandLine();
     }
 

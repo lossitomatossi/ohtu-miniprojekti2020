@@ -18,6 +18,11 @@ public class UserInterface {
     private DbCommands db;
     private final boolean mockUI;
 
+    /**
+     * Constructor
+     *
+     * @param dbName Database name for production
+     */
     public UserInterface(String dbName) throws SQLException, ClassNotFoundException {
         br = new BufferedReader(new InputStreamReader(System.in));
         db = new DbCommands(dbName);
@@ -38,58 +43,65 @@ public class UserInterface {
      * Launches the application's command-line UI
      */
     public void commandLine() throws IOException, SQLException {
+        String help = "\nNumber or name of the command can be used."
+                      + "\n0 - exit    | Exits the application"
+                      + "\n1 - help    | Prints help"
+                      + "\n2 - book    | Stores book"
+                      + "\n3 - youtube | Stores YouTube link"
+                      + "\n4 - list    | Lists objects from specified category"
+                      + "\n5 - search  | Searches for specified term";
 
-        String help = "exit - Close the program.\n"
-                      + "book - Save a book recommendation.\n"
-                      + "youtube - Save an YouTube recommendation.";
-
-        System.out.println("Get help by entering 'help' or close the program by entering 'exit'.");
+        System.out.println(help);
 
         while (true) {
-            System.out.print("Enter command: ");
+            String msg = "";
+            System.out.print("\nEnter command: ");
             String command = br.readLine();
 
-            switch (command) {
+            switch (command.toLowerCase()) {
+                case "0":
                 case "exit":
                     System.out.println("Exiting..");
                     br.close();
                     return;
+                case "1":
                 case "help":
-                    System.out.println(help);
+                    msg = help;
                     break;
+                case "2":
                 case "book":
-                    Book book = getBook();
-                    if (book != null) {
-                        if (mockUI) {
-                            System.out.println(book);
-                        } else {
-                            db.add(book);
-                            System.out.println("Book added successfully!");
-                        }
-                    }
+                    msg = store(getBook()) ? "Book added successfully!" : "There was a problem on adding a book.";
                     break;
+                case "3":
                 case "youtube":
-                    Youtube youtube = getYoutube();
-                    if (youtube != null) {
-                        if (mockUI) {
-                            System.out.println(youtube);
-                        } else {
-                            db.add(youtube);
-                            System.out.println("YouTube link added successfully!");
-                        }
-                    }
+                    msg = store(getBook()) ?
+                            "Youtube link added successfully!" : "There was a problem on adding an YouTube link.";
+                    break;
+                case "4":
+                case "list":
+                    System.out.println("Categories: youtube, book");
+                    System.out.print("Enter category to list: ");
+                    msg = list(br.readLine());
+                    break;
+                case "5":
+                case "search":
+                    System.out.println("Categories: youtube, book");
+                    System.out.print("Enter category: ");
+                    String category = br.readLine();
+                    System.out.print("Enter searchterm: ");
+                    String searchTerm = br.readLine();
+                    msg = search(category, searchTerm);
                     break;
                 default:
+                    System.out.println(command.toLowerCase());
                     System.out.println("No such command exists. Enter 'help' to get help.");
             }
+            System.out.println(msg);
         }
     }
 
     /**
-     * Gets the data from user for the book recommendation
-     *
-     * TODO: Possibly a single method, and pass the type of the entry as argument
-     * like "YouTube", "Book" or Tip:Youtube, Tip:Book
+     * Gets the data from user for the book recommendation in command-line
      *
      * @return Book object or null
      */
@@ -130,6 +142,11 @@ public class UserInterface {
         return new Book(title, author, year, pages, isbn);
     }
 
+    /**
+     * Gets the data from user for the YouTube recommendation in command-line
+     *
+     * @return Youtube object or null
+     */
     protected Youtube getYoutube() throws IOException{
 
         System.out.println("Enter URL*: ");
@@ -152,5 +169,44 @@ public class UserInterface {
         }
 
         return new Youtube(url, title, description);
+    }
+
+    /**
+     * Lists all objects of the specified class in a formatted manner
+     *
+     * @param o String that represents the object which the user wants as a list
+     * @return formatted String of all items of the specified class
+     */
+    protected String list(String o) {
+        return "List of items";
+    }
+
+    /**
+     * Searches for the searchTerm in database
+     *
+     * @param o Object can be Book or Youtube
+     * @param searchTerm String used for searching
+     * @return formatted String of found items
+     */
+    protected String search(Object o, String searchTerm) {
+        return "Founds items";
+    }
+
+    /**
+     * Stores the object (Book, Youtube) to the database
+     *
+     * @param o Object can be Book or Youtube
+     * @return Boolean true if storing object was successful, otherwise false
+     */
+    protected boolean store(Object o) throws SQLException {
+        if (o != null) {
+            if (mockUI) {
+                System.out.println(o);
+            } else {
+                db.add(o);
+            }
+            return true;
+        }
+        return false;
     }
 }
