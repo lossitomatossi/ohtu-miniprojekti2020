@@ -42,7 +42,6 @@ public class DbCommands {
         } catch (org.sqlite.SQLiteException e) {
             //Taulut on jo luotu
 
-
         }
     }
 
@@ -94,7 +93,6 @@ public class DbCommands {
             }
         } catch (Exception ignored) {
         }
-
         return book.toString();
     }
 
@@ -132,17 +130,14 @@ public class DbCommands {
         PreparedStatement p = db.prepareStatement("SELECT * FROM books WHERE name LIKE ? OR writer LIKE ?");
         p.setString(1, searchTerm);
         p.setString(2, searchTerm);
-
         ResultSet r = p.executeQuery();
 
         while (r.next()) {
             searchResult.append(r.getString("name")).append(" ").append(r.getString("writer"))
                     .append(" ").append(r.getInt("year")).append(" ").append(r.getInt("pages"))
-                    .append(" ").append(r.getString("isbn"));
+                    .append(" ").append(r.getString("isbn")).append(" ");
         }
-
         return searchResult.toString();
-
     }
 
     private String searchYoutube(String searchTerm) throws SQLException {
@@ -156,11 +151,9 @@ public class DbCommands {
 
         while (r.next()) {
             searchResult.append(r.getString("url")).append(" ").append(r.getString("title"))
-                    .append(" ").append(r.getString("description"));
+                    .append(" ").append(r.getString("description")).append(" ");
         }
-
         return searchResult.toString();
-
     }
 
     public void removeTable(String name) throws SQLException {

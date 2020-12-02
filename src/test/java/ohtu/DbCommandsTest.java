@@ -66,9 +66,8 @@ public class DbCommandsTest {
 
     }
 
-
     @Test
-    public void kirjaaVoiHakeaNimenPerusteella() throws SQLException{
+    public void kirjaaVoiHakeaNimenPerusteella() throws SQLException {
         Book b1 = new Book("kirja1", "kirjailija", 1996, 100, "isbn1");
         Book b2 = new Book("kirja2", "kirjailija2", 1997, 101, "isbn2");
         Book b3 = new Book("kirja3", "kirjailija3", 1998, 102, "isbn3");
@@ -77,10 +76,30 @@ public class DbCommandsTest {
         dbc.add(b2);
         dbc.add(b3);
 
-        assertEquals(dbc.search("book", "kirja1"), "kirja1 kirjailija, 1996, 100, isbn1");
+        assertEquals(dbc.search("book", "kirja1"), "kirja1 kirjailija 1996 100 isbn1 ");
 
     }
 
+    @Test
+    public void kirjaaVoiHakeaKirjailijanPerusteella() throws SQLException {
+        Book b1 = new Book("kirja1", "kirjailija", 1996, 100, "isbn1");
+        Book b2 = new Book("kirja2", "kirjailija", 1997, 101, "isbn2");
+        Book b3 = new Book("kirja3", "kirjailija", 1998, 102, "isbn3");
 
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertEquals(dbc.search("book", "kirjailija"), "kirja1 kirjailija 1996 100 isbn1 kirja2 kirjailija 1997 101 isbn2 kirja3 kirjailija 1998 102 isbn3 ");
+
+    }
+
+    @Test
+    public void youtubeLinkkiäVoiHakeaOtsikonPerusteella() throws SQLException {
+        Youtube yt = new Youtube("urli", "otsikko", "a");
+        dbc.add(yt);
+        assertEquals(dbc.search("youtube", "otsikko"), "urli otsikko a ");
+
+    }
 
 }
