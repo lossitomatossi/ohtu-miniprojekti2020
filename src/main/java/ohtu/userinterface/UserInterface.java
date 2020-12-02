@@ -197,8 +197,8 @@ public class UserInterface {
      * @param searchTerm String used for searching
      * @return formatted String of found items
      */
-    protected String search(Object o, String searchTerm) {
-        return "Founds items:";
+    protected String search(String category, String searchTerm) throws SQLException {
+        return "Founds items: " + db.search(category, searchTerm);
     }
 
     /**

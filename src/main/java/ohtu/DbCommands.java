@@ -34,9 +34,16 @@ public class DbCommands {
 
         Statement s = db.createStatement();
 
-        s.execute("CREATE TABLE Books (id INTEGER PRIMARY KEY, name TEXT NOT NULL, Writer TEXT NOT NULL, year INTEGER, pages INTEGER, isbn TEXT)");
+        try {
+            s.execute("CREATE TABLE Books (id INTEGER PRIMARY KEY, name TEXT NOT NULL, Writer TEXT NOT NULL, year INTEGER, pages INTEGER, isbn TEXT)");
 
-        s.execute("CREATE TABLE Youtube_links (id INTEGER PRIMARY KEY, url TEXT NOT NULL, title TEXT, description TEXT)");
+            s.execute("CREATE TABLE Youtube_links (id INTEGER PRIMARY KEY, url TEXT NOT NULL, title TEXT, description TEXT)");
+
+        } catch (org.sqlite.SQLiteException e) {
+            //Taulut on jo luotu
+
+
+        }
     }
 
     public void add(Object o) throws SQLException {
@@ -85,7 +92,8 @@ public class DbCommands {
                         .append(" ").append(r.getInt("year")).append(" ").append(r.getInt("pages"))
                         .append(" ").append(r.getString("isbn"));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return book.toString();
     }
@@ -100,9 +108,59 @@ public class DbCommands {
                 Youtube.append(r.getString("url")).append(" ").append(r.getString("title"))
                         .append(" ").append(r.getString("description"));
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return Youtube.toString();
+    }
+
+    public String search(String category, String searchTerm) throws SQLException {
+
+        if (category.equalsIgnoreCase("youtube")) {
+            return searchYoutube(searchTerm);
+
+        } else if (category.equalsIgnoreCase("book")) {
+            return searchBook(searchTerm);
+        }
+
+        return "";
+    }
+
+    private String searchBook(String searchTerm) throws SQLException {
+        StringBuilder searchResult = new StringBuilder();
+
+        PreparedStatement p = db.prepareStatement("SELECT * FROM books WHERE name LIKE ? OR writer LIKE ?");
+        p.setString(1, searchTerm);
+        p.setString(2, searchTerm);
+
+        ResultSet r = p.executeQuery();
+
+        while (r.next()) {
+            searchResult.append(r.getString("name")).append(" ").append(r.getString("writer"))
+                    .append(" ").append(r.getInt("year")).append(" ").append(r.getInt("pages"))
+                    .append(" ").append(r.getString("isbn"));
+        }
+
+        return searchResult.toString();
+
+    }
+
+    private String searchYoutube(String searchTerm) throws SQLException {
+
+        StringBuilder searchResult = new StringBuilder();
+
+        PreparedStatement p = db.prepareStatement("SELECT * FROM Youtube_links WHERE title = ?");
+        p.setString(1, searchTerm);
+
+        ResultSet r = p.executeQuery();
+
+        while (r.next()) {
+            searchResult.append(r.getString("url")).append(" ").append(r.getString("title"))
+                    .append(" ").append(r.getString("description"));
+        }
+
+        return searchResult.toString();
+
     }
 
     public void removeTable(String name) throws SQLException {

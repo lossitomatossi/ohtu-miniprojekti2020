@@ -66,4 +66,21 @@ public class DbCommandsTest {
 
     }
 
+
+    @Test
+    public void kirjaaVoiHakeaNimenPerusteella() throws SQLException{
+        Book b1 = new Book("kirja1", "kirjailija", 1996, 100, "isbn1");
+        Book b2 = new Book("kirja2", "kirjailija2", 1997, 101, "isbn2");
+        Book b3 = new Book("kirja3", "kirjailija3", 1998, 102, "isbn3");
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertEquals(dbc.search("book", "kirja1"), "kirja1 kirjailija, 1996, 100, isbn1");
+
+    }
+
+
+
 }
