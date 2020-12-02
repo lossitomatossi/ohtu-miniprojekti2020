@@ -54,6 +54,9 @@ public class StepDefinitions {
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn(title)
                 .thenReturn(writer)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
                 .thenReturn(inputs.get("commandExit"));
 
         runApp();
