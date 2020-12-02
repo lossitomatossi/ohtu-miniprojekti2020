@@ -3,7 +3,7 @@ Feature: As a user I can add a new book to the list
     Scenario: user can add a new book by giving title and writer
         Given command book is selected
         When  user enters book title "Refactoring" and writer "Martin Fowler"
-        Then  system will respond with "Refactoring                               Martin Fowler         -1     -1      "
+        Then  system will respond with "Refactoring                               Martin Fowler         -1     -1      exit"
 
     Scenario: user can not add a new book without giving title
         Given command book is selected

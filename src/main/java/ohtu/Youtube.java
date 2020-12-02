@@ -1,6 +1,7 @@
 package ohtu;
 
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  *
@@ -49,6 +50,29 @@ public class Youtube {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+        if(!(o instanceof Youtube)) {
+            return false;
+        }
+        Youtube other = (Youtube) o;
+        if(other.url.equals(this.url) && other.title.equals(this.title)) {
+            return true;
+        }
+        return false;
+    } 
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.url);
+        hash = 29 * hash + Objects.hashCode(this.title);
+        return hash;
     }
     
     @Override

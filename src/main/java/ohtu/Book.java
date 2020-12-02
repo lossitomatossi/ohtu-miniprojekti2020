@@ -1,5 +1,7 @@
 package ohtu;
 
+import java.util.Objects;
+
 public class Book {
 
     private String title;
@@ -59,6 +61,29 @@ public class Book {
 
     public String getIsbn() {
         return isbn;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if(o == this) {
+            return true;
+        }
+        if(!(o instanceof Book)) {
+            return false;
+        }
+        Book other = (Book) o;
+        if(other.title.equals(this.title) && other.author.equals(this.author)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 19 * hash + Objects.hashCode(this.title);
+        hash = 19 * hash + Objects.hashCode(this.author);
+        return hash;
     }
 
     @Override

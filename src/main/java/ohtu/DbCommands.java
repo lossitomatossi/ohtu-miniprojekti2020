@@ -86,7 +86,8 @@ public class DbCommands {
                         r.getString("isbn")));
             }
 
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return books;
     }
@@ -106,8 +107,8 @@ public class DbCommands {
                 youtubeLink.setDate(r.getDate("created"));
                 youtubeLinks.add(youtubeLink);
             }
-
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return youtubeLinks;
     }
@@ -157,6 +158,38 @@ public class DbCommands {
     public void removeTable(String name) throws SQLException {
         PreparedStatement p = db.prepareStatement("DROP TABLE " + name);
         p.executeUpdate();
+    }
+
+    public boolean contains(Object o) throws SQLException {
+        if (o instanceof Book) {
+            return containsBook((Book) o);
+        }
+
+        if (o instanceof Youtube) {
+            return containsYoutube((Youtube) o);
+        }
+
+        return false;
+    }
+
+    protected boolean containsBook(Book b) throws SQLException {
+        ArrayList<Book> books = searchBook(b.getTitle());
+        for (Book book : books) {
+            if (book.equals(b)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean containsYoutube(Youtube yt) throws SQLException {
+        ArrayList<Youtube> youtubeLinks = searchYoutube(yt.getTitle());
+        for (Youtube link : youtubeLinks) {
+            if (link.equals(yt)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

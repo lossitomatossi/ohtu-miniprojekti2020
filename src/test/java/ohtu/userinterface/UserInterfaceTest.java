@@ -19,7 +19,7 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 public class UserInterfaceTest {
 
     @Test
-    public void correctErrorWhenUnknownCommandWithSuccessfulExit() throws IOException, SQLException {
+    public void correctErrorWhenUnknownCommandWithSuccessfulExit() throws IOException, SQLException, ClassNotFoundException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
@@ -36,7 +36,7 @@ public class UserInterfaceTest {
     }
 
     @Test
-    public void bookParsedCorrectly() throws IOException {
+    public void bookParsedCorrectly() throws IOException, SQLException, ClassNotFoundException {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("Ayy", "Wizard", "1995", "250", "ABC1");
 
@@ -49,7 +49,7 @@ public class UserInterfaceTest {
     }
 
     @Test
-    public void youtubeParsedCorrectly() throws IOException {
+    public void youtubeParsedCorrectly() throws IOException, SQLException, ClassNotFoundException {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("https://youtu.be/placeholder", "Cat video", "Watch soon!");
 
@@ -66,7 +66,7 @@ public class UserInterfaceTest {
     }
 
     @Test
-    public void correctErrorWhenAddingBookWithoutTitle() throws IOException {
+    public void correctErrorWhenAddingBookWithoutTitle() throws IOException, SQLException, ClassNotFoundException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
@@ -82,7 +82,7 @@ public class UserInterfaceTest {
     }
 
     @Test
-    public void printedCorrectListings() throws IOException, SQLException {
+    public void printedCorrectListings() throws IOException, SQLException, ClassNotFoundException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
@@ -98,7 +98,7 @@ public class UserInterfaceTest {
     }
 
     @Test
-    public void printedCorrectSearchResults() throws IOException, SQLException {
+    public void printedCorrectSearchResults() throws IOException, SQLException, ClassNotFoundException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 

@@ -49,7 +49,7 @@ public class StepDefinitions {
     }
 
     @When("user enters book title {string} and writer {string}")
-    public void userEntersBookTitleAndWriter(String title, String writer) throws IOException, SQLException {
+    public void userEntersBookTitleAndWriter(String title, String writer) throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn(title)
@@ -60,7 +60,7 @@ public class StepDefinitions {
     }
 
     @When("user enters youtube url {string} and title {string}")
-    public void userEntersYoutubeURLAndTitle(String url, String title) throws IOException, SQLException {
+    public void userEntersYoutubeURLAndTitle(String url, String title) throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandYoutube"))
                 .thenReturn(url)
@@ -72,7 +72,7 @@ public class StepDefinitions {
     }
 
     @When("user leaves book title blank")
-    public void userLeavesTitleBlank() throws IOException, SQLException {
+    public void userLeavesTitleBlank() throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn("")
@@ -82,7 +82,7 @@ public class StepDefinitions {
     }
 
     @When("user leaves youtube url blank")
-    public void userLeavesURLBlank() throws IOException, SQLException {
+    public void userLeavesURLBlank() throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandYoutube"))
                 .thenReturn("")
@@ -92,7 +92,7 @@ public class StepDefinitions {
     }
 
     @When("user enters book title {string} but leaves writer blank")
-    public void userEntersBookTitleButLeavesWriterBlank(String title) throws IOException, SQLException {
+    public void userEntersBookTitleButLeavesWriterBlank(String title) throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandBook"))
                 .thenReturn(title)
@@ -107,11 +107,12 @@ public class StepDefinitions {
         //For debugging
         System.setOut(standardOut);
         System.out.println(outputStreamCaptor);
+        //*****************************************
         assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
     }
 
     // Helper methods
-    private void runApp() throws IOException, SQLException {
+    private void runApp() throws IOException, SQLException, ClassNotFoundException {
         UserInterface app = new UserInterface(br) {};
         app.commandLine();
     }

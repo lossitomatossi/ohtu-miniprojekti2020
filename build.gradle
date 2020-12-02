@@ -36,15 +36,13 @@ jacocoTestReport {
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
-project.ext {
-    cucumberVersion = '6.9.0'
-}
 
 dependencies {
-    testImplementation 'io.cucumber:cucumber-java:' + cucumberVersion
-    testImplementation 'io.cucumber:cucumber-junit:' + cucumberVersion
+    testImplementation 'io.cucumber:cucumber-java:6.9.0'
+    testImplementation 'io.cucumber:cucumber-junit:6.9.0'
     testImplementation 'junit:junit:4.13.1'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.0'
     // javafx

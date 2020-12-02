@@ -36,9 +36,10 @@ public class UserInterface {
      *
      * @param br Mock command-line reader
      */
-    protected UserInterface(BufferedReader br) {
+    protected UserInterface(BufferedReader br) throws SQLException, ClassNotFoundException {
         this.br = br;
         mockUI = true;
+        db = new DbCommands("jdbc:sqlite:testing.db");
     }
 
     /**
@@ -46,12 +47,12 @@ public class UserInterface {
      */
     public void commandLine() throws IOException, SQLException {
         String help = "\nNumber or name of the command can be used."
-                      + "\n0 - exit    | Exits the application"
-                      + "\n1 - help    | Prints help"
-                      + "\n2 - book    | Stores book"
-                      + "\n3 - youtube | Stores YouTube link"
-                      + "\n4 - list    | Lists objects from specified category"
-                      + "\n5 - search  | Searches for specified term";
+                + "\n0 - exit    | Exits the application"
+                + "\n1 - help    | Prints help"
+                + "\n2 - book    | Stores book"
+                + "\n3 - youtube | Stores YouTube link"
+                + "\n4 - list    | Lists objects from specified category"
+                + "\n5 - search  | Searches for specified term";
 
         System.out.println(help);
 
@@ -76,8 +77,8 @@ public class UserInterface {
                     break;
                 case "3":
                 case "youtube":
-                    msg = store(getYoutube()) ?
-                            "Youtube link added successfully!" : "There was a problem on adding an YouTube link.";
+                    msg = store(getYoutube())
+                            ? "Youtube link added successfully!" : "There was a problem on adding an YouTube link.";
                     break;
                 case "4":
                 case "list":
@@ -127,13 +128,15 @@ public class UserInterface {
         int year = -1;
         try {
             year = Integer.parseInt(br.readLine());
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
 
         System.out.println("Enter pages: ");
         int pages = -1;
         try {
             pages = Integer.parseInt(br.readLine());
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) {
+        }
 
         System.out.println("Enter ISBN: ");
         String isbn = br.readLine();
@@ -149,7 +152,7 @@ public class UserInterface {
      *
      * @return Youtube object or null
      */
-    protected Youtube getYoutube() throws IOException{
+    protected Youtube getYoutube() throws IOException {
 
         System.out.println("Enter URL*: ");
         String url = br.readLine();
@@ -174,7 +177,8 @@ public class UserInterface {
     }
 
     /**
-     * Searches for the searchTerm in database. If the searchTerm is empty, the method lists all items in the category.
+     * Searches for the searchTerm in database. If the searchTerm is empty, the
+     * method lists all items in the category.
      *
      * @param category Object can be Book or Youtube
      * @param searchTerm String used for searching
@@ -227,7 +231,7 @@ public class UserInterface {
      * @return Boolean true if storing object was successful, otherwise false
      */
     protected boolean store(Object o) throws SQLException {
-        if (o != null) {
+        if (o != null && !db.contains(o)) {
             if (mockUI) {
                 System.out.println(o);
             } else {

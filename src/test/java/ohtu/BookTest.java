@@ -13,14 +13,14 @@ public class BookTest {
     @Before
     public void setUp() {
         book = new Book("Aapinen", "Agricola");
-        additionalInfoBook = new Book ("kirjanen", "keijo kirjailija", 2015, 100, "978-0132350884");
+        additionalInfoBook = new Book("kirjanen", "keijo kirjailija", 2015, 100, "978-0132350884");
     }
 
     @Test
     public void constructorCreatesBook() {
         assertEquals("Aapinen", book.getTitle());
     }
-    
+
     @Test
     public void constructorCreatesAdditionalInfoBook() {
         assertEquals(2015, additionalInfoBook.getYear());
