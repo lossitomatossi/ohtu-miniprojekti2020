@@ -15,5 +15,5 @@ nbproject
 # Databases
 production.db
 testing.db
-useless.db
-empty.db
+connection_test.db
+

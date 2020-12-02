@@ -29,7 +29,7 @@ public class UserInterfaceTest {
         UserInterface app = new UserInterface(br);
         app.commandLine();
 
-        String actualOutput = new String(output.toByteArray());
+        String actualOutput = output.toString();
         String expectedError = "No such command exists. Enter 'help' to get help.";
 
         assertTrue(actualOutput.contains(expectedError) && actualOutput.contains("Exiting.."));
@@ -76,7 +76,7 @@ public class UserInterfaceTest {
         UserInterface app = new UserInterface(br);
         app.getBook();
 
-        String actualOutput = new String(output.toByteArray());
+        String actualOutput = output.toString();
 
         assertTrue(actualOutput.contains("Title cannot be blank."));
     }
@@ -92,9 +92,9 @@ public class UserInterfaceTest {
         UserInterface app = new UserInterface(br);
         app.commandLine();
 
-        String actualOutput = new String(output.toByteArray());
+        String actualOutput = output.toString();
 
-        assertTrue(actualOutput.contains("Title | Author | Year | Pages | ISBN"));
+        assertTrue(actualOutput.contains("Title                                     Author                Year   Pages   ISBN"));
     }
 
     @Test
@@ -103,14 +103,14 @@ public class UserInterfaceTest {
         System.setOut(new PrintStream(output));
 
         BufferedReader br = Mockito.mock(BufferedReader.class);
-        Mockito.when(br.readLine()).thenReturn("search", "book", "test", "exit");
+        Mockito.when(br.readLine()).thenReturn("search", "youtube", "test", "exit");
 
         UserInterface app = new UserInterface(br);
         app.commandLine();
 
-        String actualOutput = new String(output.toByteArray());
+        String actualOutput = output.toString();
 
-        assertTrue(actualOutput.contains("Founds items:"));
+        assertTrue(actualOutput.contains("URL                                       Title                                     Created Description"));
     }
 
 

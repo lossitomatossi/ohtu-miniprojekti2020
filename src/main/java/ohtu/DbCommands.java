@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ohtu;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+
 import ohtu.database.Database;
 
 /**
@@ -20,14 +13,12 @@ public class DbCommands {
 
     private final Connection db;
     private final Statement s;
-    private String databaseAddress;
 
     public DbCommands(String databaseAddress) throws SQLException, ClassNotFoundException {
         Database database = new Database(databaseAddress);
         db = database.getConnection();
         s = db.createStatement();
         createTables();
-
     }
 
     private void createTables() throws SQLException {
@@ -37,11 +28,10 @@ public class DbCommands {
         try {
             s.execute("CREATE TABLE Books (id INTEGER PRIMARY KEY, name TEXT NOT NULL, Writer TEXT NOT NULL, year INTEGER, pages INTEGER, isbn TEXT)");
 
-            s.execute("CREATE TABLE Youtube_links (id INTEGER PRIMARY KEY, url TEXT NOT NULL, title TEXT, description TEXT)");
+            s.execute("CREATE TABLE Youtube_links (id INTEGER PRIMARY KEY, url TEXT NOT NULL, title TEXT, description TEXT, created DATETIME)");
 
         } catch (org.sqlite.SQLiteException e) {
-            //Taulut on jo luotu
-
+            // Tables have already been created
         }
     }
 
@@ -57,7 +47,7 @@ public class DbCommands {
     }
 
     private void addBook(Book b) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Books(name,writer, year, pages, isbn) VALUES (?,?,?,?,?)");
+        PreparedStatement p = db.prepareStatement("INSERT INTO Books(name, writer, year, pages, isbn) VALUES (?,?,?,?,?)");
 
         p.setString(1, b.getTitle());
         p.setString(2, b.getAuthor());
@@ -70,90 +60,98 @@ public class DbCommands {
     }
 
     private void addYoutube(Youtube y) throws SQLException {
-        PreparedStatement p = db.prepareStatement("INSERT INTO Youtube_links(url,title, description) VALUES (?,?,?)");
+        PreparedStatement p = db.prepareStatement("INSERT INTO Youtube_links(url, title, description, created) VALUES (?,?,?,?)");
 
         p.setString(1, y.getUrl());
         p.setString(2, y.getTitle());
         p.setString(3, y.getDescription());
+        p.setDate(4, y.getDate());
 
         p.executeUpdate();
 
     }
 
-    public String BookTable() {
-        StringBuilder book = new StringBuilder();
+    public ArrayList<Book> listBook() {
+        ArrayList<Book> books = new ArrayList<>();
 
         try {
             ResultSet r = s.executeQuery("SELECT * FROM Books");
 
             while (r.next()) {
-                book.append(r.getString("name")).append(" ").append(r.getString("writer"))
-                        .append(" ").append(r.getInt("year")).append(" ").append(r.getInt("pages"))
-                        .append(" ").append(r.getString("isbn"));
+                books.add(new Book(
+                        r.getString("name"),
+                        r.getString("writer"),
+                        r.getInt("year"),
+                        r.getInt("pages"),
+                        r.getString("isbn")));
             }
-        } catch (Exception ignored) {
-        }
-        return book.toString();
+
+        } catch (Exception ignored) {}
+
+        return books;
     }
 
-    public String YoutubeTable() {
-        StringBuilder Youtube = new StringBuilder();
+    public ArrayList<Youtube> listYoutube() {
+        ArrayList<Youtube> youtubeLinks = new ArrayList<>();
 
         try {
             ResultSet r = s.executeQuery("SELECT * FROM Youtube_links");
 
             while (r.next()) {
-                Youtube.append(r.getString("url")).append(" ").append(r.getString("title"))
-                        .append(" ").append(r.getString("description"));
+                Youtube youtubeLink = new Youtube(
+                        r.getString("url"),
+                        r.getString("title"),
+                        r.getString("description"));
+
+                youtubeLink.setDate(r.getDate("created"));
+                youtubeLinks.add(youtubeLink);
             }
-        } catch (Exception ignored) {
-        }
 
-        return Youtube.toString();
+        } catch (Exception ignored) {}
+
+        return youtubeLinks;
     }
 
-    public String search(String category, String searchTerm) throws SQLException {
-
-        if (category.equalsIgnoreCase("youtube")) {
-            return searchYoutube(searchTerm);
-
-        } else if (category.equalsIgnoreCase("book")) {
-            return searchBook(searchTerm);
-        }
-
-        return "";
-    }
-
-    private String searchBook(String searchTerm) throws SQLException {
-        StringBuilder searchResult = new StringBuilder();
+    public ArrayList<Book> searchBook(String searchTerm) throws SQLException {
+        ArrayList<Book> foundBooks = new ArrayList<>();
 
         PreparedStatement p = db.prepareStatement("SELECT * FROM books WHERE name LIKE ? OR writer LIKE ?");
-        p.setString(1, searchTerm);
-        p.setString(2, searchTerm);
+        p.setString(1, '%' + searchTerm + '%');
+        p.setString(2, '%' + searchTerm + '%');
         ResultSet r = p.executeQuery();
 
         while (r.next()) {
-            searchResult.append(r.getString("name")).append(" ").append(r.getString("writer"))
-                    .append(" ").append(r.getInt("year")).append(" ").append(r.getInt("pages"))
-                    .append(" ").append(r.getString("isbn")).append(" ");
+            foundBooks.add(new Book(
+                    r.getString("name"),
+                    r.getString("writer"),
+                    r.getInt("year"),
+                    r.getInt("pages"),
+                    r.getString("isbn")
+            ));
         }
-        return searchResult.toString();
+
+        return foundBooks;
     }
 
-    private String searchYoutube(String searchTerm) throws SQLException {
+    public ArrayList<Youtube> searchYoutube(String searchTerm) throws SQLException {
+        ArrayList<Youtube> foundYoutubeLinks = new ArrayList<>();
 
-        StringBuilder searchResult = new StringBuilder();
-
-        PreparedStatement p = db.prepareStatement("SELECT * FROM Youtube_links WHERE title = ?");
-        p.setString(1, searchTerm);
+        PreparedStatement p = db.prepareStatement("SELECT * FROM Youtube_links WHERE title LIKE ?");
+        p.setString(1, '%' + searchTerm + '%');
 
         ResultSet r = p.executeQuery();
 
         while (r.next()) {
-            searchResult.append(r.getString("url")).append(" ").append(r.getString("title"))
-                    .append(" ").append(r.getString("description")).append(" ");
+            Youtube youtubeLink = new Youtube(
+                    r.getString("url"),
+                    r.getString("title"),
+                    r.getString("description")
+            );
+            youtubeLink.setDate(r.getDate("created"));
+            foundYoutubeLinks.add(youtubeLink);
         }
-        return searchResult.toString();
+
+        return foundYoutubeLinks;
     }
 
     public void removeTable(String name) throws SQLException {

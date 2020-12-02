@@ -63,10 +63,10 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Title: " + title
-                + " | Author: " + author
-                + " | Year: " + year
-                + " | Pages: " + pages
-                + " | ISBN: " + isbn;
+        return String.format("%-41s", title) + " "
+                + String.format("%-21s", author) + " "
+                + String.format("%-6s", year) + " "
+                + String.format("%-7s", pages) + " "
+                + isbn + "\n";
     }
 }

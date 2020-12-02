@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ohtu;
 
 import java.sql.SQLException;
 import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
 /**
  *
@@ -22,14 +18,6 @@ public class DbCommandsTest {
     DbCommands dbc;
 
     public DbCommandsTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
     }
 
     @Before
@@ -43,27 +31,20 @@ public class DbCommandsTest {
         dbc.removeTable("Youtube_links");
     }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
     @Test
     public void kirjaOlionVoiLisata() throws SQLException {
+        Book book = new Book("nimi", "kirjoittaja", 1, 2, "abc");
+        dbc.add(book);
 
-        Book b = new Book("nimi", "kirjoittaja", 1, 2, "abc");
-        dbc.add(b);
-        assertEquals(dbc.BookTable(), "nimi kirjoittaja 1 2 abc");
-
+        assertTrue(new ReflectionEquals(dbc.listBook().get(0)).matches(book));
     }
 
     @Test
     public void YoutubeOlionVoiLisata() throws SQLException {
-        Youtube y = new Youtube("aaa", "title", "bbb");
-        dbc.add(y);
+        Youtube yt = new Youtube("aaa", "title", "bbb");
+        dbc.add(yt);
 
-        assertEquals(dbc.YoutubeTable(), "aaa title bbb");
-
+        assertTrue(new ReflectionEquals(dbc.listYoutube().get(0)).matches(yt));
     }
 
     @Test
@@ -76,8 +57,7 @@ public class DbCommandsTest {
         dbc.add(b2);
         dbc.add(b3);
 
-        assertEquals(dbc.search("book", "kirja1"), "kirja1 kirjailija 1996 100 isbn1 ");
-
+        assertTrue(new ReflectionEquals(dbc.searchBook("kirja1").get(0)).matches(b1));
     }
 
     @Test
@@ -90,16 +70,15 @@ public class DbCommandsTest {
         dbc.add(b2);
         dbc.add(b3);
 
-        assertEquals(dbc.search("book", "kirjailija"), "kirja1 kirjailija 1996 100 isbn1 kirja2 kirjailija 1997 101 isbn2 kirja3 kirjailija 1998 102 isbn3 ");
-
+        assertEquals(dbc.searchBook("kirjailija").size(), 3);
     }
 
     @Test
-    public void youtubeLinkkiäVoiHakeaOtsikonPerusteella() throws SQLException {
+    public void youtubeLinkkiaVoiHakeaOtsikonPerusteella() throws SQLException {
         Youtube yt = new Youtube("urli", "otsikko", "a");
         dbc.add(yt);
-        assertEquals(dbc.search("youtube", "otsikko"), "urli otsikko a ");
 
+        assertTrue(new ReflectionEquals(dbc.searchYoutube("otsikko").get(0)).matches(yt));
     }
 
 }

@@ -7,15 +7,17 @@ import ohtu.Youtube;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Class for the application UI
  */
 public class UserInterface {
 
-    private final BufferedReader br;
     private DbCommands db;
+    private final BufferedReader br;
     private final boolean mockUI;
 
     /**
@@ -81,7 +83,7 @@ public class UserInterface {
                 case "list":
                     System.out.println("Categories: youtube, book");
                     System.out.print("Enter category to list: ");
-                    msg = list(br.readLine());
+                    msg = search(br.readLine(), "");
                     break;
                 case "5":
                 case "search":
@@ -172,33 +174,50 @@ public class UserInterface {
     }
 
     /**
-     * Lists all objects of the specified category in a formatted manner
+     * Searches for the searchTerm in database. If the searchTerm is empty, the method lists all items in the category.
      *
-     * @param o String that represents the category which the user wants as a list
-     * @return formatted String of all items of the specified category
-     */
-    protected String list(String o) {
-        if (mockUI) {
-            return  "Title | Author | Year | Pages | ISBN";
-        }
-
-        if (o.toLowerCase().equals("book")) {
-            return "Title | Author | Year | Pages | ISBN\n" + db.BookTable();
-        } else if (o.toLowerCase().equals("youtube")) {
-            return "URL | Title | Date Added | Description\n" + db.YoutubeTable();
-        }
-        return "No such category.";
-    }
-
-    /**
-     * Searches for the searchTerm in database
-     *
-     * @param o Object can be Book or Youtube
+     * @param category Object can be Book or Youtube
      * @param searchTerm String used for searching
      * @return formatted String of found items
      */
     protected String search(String category, String searchTerm) throws SQLException {
-        return "Founds items: "; // + db.search(category, searchTerm);
+        StringBuilder output = new StringBuilder();
+
+        ArrayList<?> results = null;
+
+        if (category.equalsIgnoreCase("book")) {
+            if (!mockUI) {
+                results = searchTerm.isEmpty() ? db.listBook() : db.searchBook(searchTerm);
+            }
+
+            // Header
+            output.append(String.format("%-41s", "Title")).append(" ")
+                    .append(String.format("%-21s", "Author")).append(" ")
+                    .append(String.format("%-6s", "Year")).append(" ")
+                    .append(String.format("%-7s", "Pages")).append(" ")
+                    .append("ISBN").append("\n");
+
+        } else if (category.equalsIgnoreCase("youtube")) {
+            if (!mockUI) {
+                results = searchTerm.isEmpty() ? db.listYoutube() : db.searchYoutube(searchTerm);
+            }
+
+            // Header
+            output.append(String.format("%-41s", "URL")).append(" ")
+                    .append(String.format("%-41s", "Title")).append(" ")
+                    .append(String.format("%-6s", "Created")).append(" ")
+                    .append("Description").append("\n");
+        } else {
+            return "No such category.";
+        }
+
+        if (results != null) {
+            for (Object o : results) {
+                output.append(o.toString());
+            }
+        }
+
+        return output.toString();
     }
 
     /**

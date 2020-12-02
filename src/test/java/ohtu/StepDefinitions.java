@@ -22,8 +22,8 @@ public class StepDefinitions {
 
     private final PrintStream standardOut = System.out;
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    private BufferedReader br = mock(BufferedReader.class);
-    private HashMap<String, String> inputs = new HashMap<>();
+    private final BufferedReader br = mock(BufferedReader.class);
+    private final HashMap<String, String> inputs = new HashMap<>();
 
     @Before
     public void setUp() {

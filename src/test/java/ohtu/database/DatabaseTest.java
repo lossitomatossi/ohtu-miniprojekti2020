@@ -1,7 +1,10 @@
 package ohtu.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -14,9 +17,17 @@ public class DatabaseTest {
 
     @Before
     public void setUp() throws SQLException, ClassNotFoundException {
-        databaseAddress = "jdbc:sqlite:useless.db";
+        databaseAddress = "jdbc:sqlite:connection_test.db";
         database = new Database(databaseAddress);
         conn = database.getConnection();
+    }
+
+    @After
+    public void tearDown() throws SQLException {
+        conn.close();
+
+        File dbFile = new File("connection_test.db");
+        dbFile.delete();
     }
 
     @Test
@@ -28,8 +39,6 @@ public class DatabaseTest {
     
     @Test
     public void noSchemaWithoutDatabase() throws SQLException, ClassNotFoundException {
-        Database database2 = new Database("jdbc:sqlite:empty.db");
-        conn = database2.getConnection();
         assertNull(conn.getSchema());
     }
 }
