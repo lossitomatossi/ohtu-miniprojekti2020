@@ -103,7 +103,7 @@ public class DbCommandsTest {
     }
 
     @Test
-    public void kirjaaJotaEiOleLisattyEiLoydyTietokannasta() throws SQLException{
+    public void kirjaaJotaEiOleLisattyEiLoydyTietokannasta() throws SQLException {
         Book b1 = new Book("kirja1", "kirjailija", 1950, 100, "isbn1");
 
         assertFalse(dbc.containsBook(b1));
@@ -115,9 +115,9 @@ public class DbCommandsTest {
 
         assertFalse(dbc.contains(yt1));
     }
-    
+
     @Test
-    public void tuntematontaLukuvinkkiaEiLouduTietokannasta() throws SQLException {
+    public void tuntematontaLukuvinkkiaEiLoydyTietokannasta() throws SQLException {
         assertFalse(dbc.contains(new Object()));
     }
 }
