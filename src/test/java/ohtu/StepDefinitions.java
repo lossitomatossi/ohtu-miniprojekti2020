@@ -1,5 +1,6 @@
 package ohtu;
 
+import io.cucumber.java.After;
 import ohtu.userinterface.UserInterface;
 
 import io.cucumber.java.Before;
@@ -9,31 +10,37 @@ import io.cucumber.java.en.Then;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import org.junit.After;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class StepDefinitions {
 
-    private final PrintStream standardOut = System.out;
-    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
-    private final BufferedReader br = mock(BufferedReader.class);
-    private final HashMap<String, String> inputs = new HashMap<>();
+    final PrintStream standardOut = System.out;
+    final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
+    final BufferedReader br = mock(BufferedReader.class);
+    final HashMap<String, String> inputs = new HashMap<>();
+    final String testDatabase = "testing.db";
+    DbCommands dbc;
 
     @Before
-    public void setUp() {
+    public void setUp() throws SQLException, ClassNotFoundException {
         System.setOut(new PrintStream(outputStreamCaptor));
+        dbc = new DbCommands("jdbc:sqlite:" + testDatabase);
         inputs.put("commandExit", "exit");
     }
 
     @After
-    public void tearDown() {
+    public void tearDown() throws SQLException {
         System.setOut(standardOut);
+        dbc.closeDbConnection();
+        String msg = new File(testDatabase).delete() ? "" + testDatabase + " deleted succesfully" : "Failed to delete " + testDatabase;
+//        System.out.println(msg);
     }
 
     @Given("command book is selected")
@@ -46,6 +53,36 @@ public class StepDefinitions {
     public void commandYoutubeSelected() throws IOException {
         inputs.put("commandYoutube", "youtube");
 
+    }
+
+    @Given("book {string} by writer {string} is successfully added on the list")
+    public void bookIsSuccessfullyAddedOnTheList(String title, String writer) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn("book")
+                .thenReturn(title)
+                .thenReturn(writer)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+
+        assertTrue(outputStreamCaptor.toString().contains("Book added successfully!"));
+    }
+
+    @Given("youtube url {string} with title {string} is successfully added on the list")
+    public void youtubeLinkIsSuccessfullyAddedOnTheList(String url, String title) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn("youtube")
+                .thenReturn(url)
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+        
+        assertTrue(outputStreamCaptor.toString().contains("Youtube link added successfully!"));
     }
 
     @When("user enters book title {string} and writer {string}")
@@ -108,16 +145,17 @@ public class StepDefinitions {
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
         //For debugging
-        System.setOut(standardOut);
-        System.out.println(outputStreamCaptor);
+//        System.setOut(standardOut);
+//        System.out.println(outputStreamCaptor);
         //*****************************************
         assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
+
     }
 
     // Helper methods
     private void runApp() throws IOException, SQLException, ClassNotFoundException {
-        UserInterface app = new UserInterface(br) {};
+        UserInterface app = new UserInterface(br, dbc) {
+        };
         app.commandLine();
     }
-
 }
