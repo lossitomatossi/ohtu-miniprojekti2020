@@ -108,8 +108,8 @@ public class StepDefinitions {
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
         //For debugging
-        System.setOut(standardOut);
-        System.out.println(outputStreamCaptor);
+//        System.setOut(standardOut);
+//        System.out.println(outputStreamCaptor);
         //*****************************************
         assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
     }

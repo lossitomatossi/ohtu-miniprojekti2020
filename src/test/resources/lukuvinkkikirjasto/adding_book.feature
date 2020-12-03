@@ -14,3 +14,9 @@ Feature: As a user I can add a new book to the list
         Given command book is selected
         When  user enters book title "Refactoring" but leaves writer blank
         Then  system will respond with "Author cannot be blank."
+
+    Scenario: user can not add a book that already is on the list
+        Given command book is selected
+        And   book "Refactoring" by writer "Martin Fowler" is successfully added on the list
+        When  user enters book title "Refactoring" and writer "Martin Fowler"
+        Then  system will respond with "The recommendation already exists."
