@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class UserInterface {
 
-    private DbCommands db;
+    private final DbCommands db;
     private final BufferedReader br;
     private final boolean mockUI;
 
@@ -73,12 +73,13 @@ public class UserInterface {
                     break;
                 case "2":
                 case "book":
-                    msg = store(getBook()) ? "Book added successfully!" : "There was a problem on adding a book.";
+                    msg = store(getBook());
+                    msg = msg.isEmpty() ? "Book added successfully!" : msg;
                     break;
                 case "3":
                 case "youtube":
-                    msg = store(getYoutube())
-                            ? "Youtube link added successfully!" : "There was a problem on adding an YouTube link.";
+                    msg = store(getYoutube());
+                    msg = msg.isEmpty() ? "Youtube link added successfully!" : msg;
                     break;
                 case "4":
                 case "list":
@@ -109,7 +110,6 @@ public class UserInterface {
      * @return Book object or null
      */
     protected Book getBook() throws IOException {
-
         System.out.println("Enter title*: ");
         String title = br.readLine();
         if (title.isBlank()) {
@@ -153,7 +153,6 @@ public class UserInterface {
      * @return Youtube object or null
      */
     protected Youtube getYoutube() throws IOException {
-
         System.out.println("Enter URL*: ");
         String url = br.readLine();
         if (url.isBlank()) {
@@ -228,17 +227,21 @@ public class UserInterface {
      * Stores the object (Book, Youtube) to the database
      *
      * @param o Object can be Book or Youtube
-     * @return Boolean true if storing object was successful, otherwise false
+     * @return String empty string if storing object was successful, otherwise an error
      */
-    protected boolean store(Object o) throws SQLException {
-        if (o != null && !db.contains(o)) {
+    protected String store(Object o) throws SQLException {
+        if (db.contains(o)) {
+            return "The recommendation already exists.";
+        }
+
+        if (o != null) {
             if (mockUI) {
                 System.out.println(o);
             } else {
                 db.add(o);
             }
-            return true;
+            return "";
         }
-        return false;
+        return "An unknown error has occurred.";
     }
 }
