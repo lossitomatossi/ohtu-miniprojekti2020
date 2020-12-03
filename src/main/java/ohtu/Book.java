@@ -72,10 +72,7 @@ public class Book {
             return false;
         }
         Book other = (Book) o;
-        if(other.title.equals(this.title) && other.author.equals(this.author)) {
-            return true;
-        }
-        return false;
+        return other.title.equals(this.title) && other.author.equals(this.author);
     }
 
     @Override
@@ -88,10 +85,14 @@ public class Book {
 
     @Override
     public String toString() {
+        String yearFormatted = (year == -1) ? "-" : String.valueOf(year);
+        String pagesFormatted= (year == -1) ? "-" : String.valueOf(pages);
+        String isbnFormatted = isbn.isEmpty() ? "-" : isbn;
+
         return String.format("%-41s", title) + " "
                 + String.format("%-21s", author) + " "
-                + String.format("%-6s", year) + " "
-                + String.format("%-7s", pages) + " "
-                + isbn + "\n";
+                + String.format("%-6s", yearFormatted) + " "
+                + String.format("%-7s", pagesFormatted) + " "
+                + isbnFormatted + "\n";
     }
 }

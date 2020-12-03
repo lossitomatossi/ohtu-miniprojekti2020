@@ -61,10 +61,7 @@ public class Youtube {
             return false;
         }
         Youtube other = (Youtube) o;
-        if(other.url.equals(this.url) && other.title.equals(this.title)) {
-            return true;
-        }
-        return false;
+        return other.url.equals(this.url) && other.title.equals(this.title);
     } 
 
     @Override

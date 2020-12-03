@@ -1,8 +1,9 @@
 plugins {
-    // id 'org.openjfx.javafxplugin' version '0.0.8'
     id 'application'
     id 'jacoco'
     id 'checkstyle'
+    id "com.github.johnrengelman.shadow" version "6.1.0"
+    // id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 mainClassName = 'ohtu.Main'
@@ -41,6 +42,7 @@ repositories {
 
 
 dependencies {
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
     testImplementation 'io.cucumber:cucumber-java:6.9.0'
     testImplementation 'io.cucumber:cucumber-junit:6.9.0'
     testImplementation 'junit:junit:4.13.1'
@@ -50,13 +52,12 @@ dependencies {
     // testImplementation "org.testfx:testfx-junit:4.0.+"
     // testImplementation "org.testfx:openjfx-monocle:jdk-11+26"
     // database connection managed with sqlite
-    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
 }
 
 test {
   // set a system property for the test JVM(s)
-  systemProperty 'testfx.robot', 'glass'
-  systemProperty 'testfx.headless', 'true' // set false to see test running
+  // systemProperty 'testfx.robot', 'glass'
+  // systemProperty 'testfx.headless', 'true' // set false to see test running
   systemProperty 'prism.order', 'sw'
   systemProperty 'prism.text', 't2k'
   systemProperty 'java.awt.headless', 'true'

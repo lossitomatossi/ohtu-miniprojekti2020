@@ -7,3 +7,15 @@
 [Definition of done](documentation/dod.md)
 
 [Hyväksymiskriteerit](https://github.com/lossitomatossi/ohtu-miniprojekti2020/tree/main/src/test/resources/lukuvinkkikirjasto)
+
+### Testit
+Komennolla `gradlew test`.
+
+### Jacoco-raportin luominen
+Komennolla `gradlew test jacocoTestReport`, jonka tulokset löytyvät avaamalla `build/reports/jacoco/test/html/index.html` selaimeen.
+
+### Checkstyle-testien ajaminen
+Komennolla `gradlew checkstyleMain`, jonka tulokset löytyvät avaamalla `build/reports/checkstyle/main.html` selaimeen.
+
+### JAR-tiedoston luominen
+Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build\libs\lukuvinkkikirjasto-all.jar`.
