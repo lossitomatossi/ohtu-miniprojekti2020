@@ -1,8 +1,8 @@
 package ohtu;
 
-import io.cucumber.java.After;
 import ohtu.userinterface.UserInterface;
 
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -13,7 +13,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+
 import java.sql.SQLException;
+
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
@@ -25,11 +27,11 @@ public class StepDefinitions {
     final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     final BufferedReader br = mock(BufferedReader.class);
     final HashMap<String, String> inputs = new HashMap<>();
-    final String testDatabase = "testing.db";
+    final String testDatabase = "cucumber_test.db";
     DbCommands dbc;
 
     @Before
-    public void setUp() throws SQLException, ClassNotFoundException {
+    public void setUp() throws ClassNotFoundException, SQLException {
         System.setOut(new PrintStream(outputStreamCaptor));
         dbc = new DbCommands("jdbc:sqlite:" + testDatabase);
         inputs.put("commandExit", "exit");
@@ -40,7 +42,7 @@ public class StepDefinitions {
         System.setOut(standardOut);
         dbc.closeDbConnection();
         String msg = new File(testDatabase).delete() ? "" + testDatabase + " deleted succesfully" : "Failed to delete " + testDatabase;
-//        System.out.println(msg);
+//        System.out.println("***\n" + msg + "***");
     }
 
     @Given("command book is selected")
@@ -54,11 +56,121 @@ public class StepDefinitions {
         inputs.put("commandYoutube", "youtube");
 
     }
-    
+
     @Given("command search is selected")
     public void commandSearchSelected() throws IOException {
         inputs.put("commandSearch", "search");
+    }
 
+    @Given("command list is selected")
+    public void commandListSelected() throws IOException {
+        inputs.put("commandList", "list");
+    }
+
+    @When("user lists books")
+    public void userListsBooks() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandList"))
+                .thenReturn("book")
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user lists youtube")
+    public void userListsYoutube() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandList"))
+                .thenReturn("youtube")
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user adds book title {string} and writer {string} and user enters category {string} and search term {string}")
+    public void userAddsNewBookAndSearchesForIt(String title, String author, String category, String term) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandBook"))
+                .thenReturn(title)
+                .thenReturn(author)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("search")
+                .thenReturn(category)
+                .thenReturn(term)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user adds book title {string} and writer {string} and user lists category {string}")
+    public void userAddsNewBookAndListsBooks(String title, String author, String category) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandBook"))
+                .thenReturn(title)
+                .thenReturn(author)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("list")
+                .thenReturn(category)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user adds youtube url {string} and title {string} and user enters category {string} and search term {string}")
+    public void userAddsNewYoutubeAndSearchesForIt(String url, String title, String category, String term) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandYoutube"))
+                .thenReturn(url)
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn("search")
+                .thenReturn(category)
+                .thenReturn(term)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user adds youtube url {string} and title {string} and user lists category {string}")
+    public void userAddsNewYoutubeAndListsYoutube(String url, String title, String category) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandYoutube"))
+                .thenReturn(url)
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn("list")
+                .thenReturn(category)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user searches for an non existent book")
+    public void nonExistentBook() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandSearch"))
+                .thenReturn("book")
+                .thenReturn("Petteri")
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user searches for an non existent youtube link")
+    public void nonExistentYoutubeLink() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandSearch"))
+                .thenReturn("youtube")
+                .thenReturn("Petteri")
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+
+    @When("user enters category {string} and search term {string}")
+    public void userEntersSearchTerm(String category, String term) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn("search")
+                .thenReturn(category)
+                .thenReturn(term)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
     }
 
     @Given("book {string} by writer {string} is successfully added on the list")
@@ -87,7 +199,7 @@ public class StepDefinitions {
                 .thenReturn(inputs.get("commandExit"));
 
         runApp();
-        
+
         assertTrue(outputStreamCaptor.toString().contains("Youtube link added successfully!"));
     }
 
@@ -147,8 +259,8 @@ public class StepDefinitions {
 
         runApp();
     }
-    
-    @When ("user enters category {string} which do not exists")
+
+    @When("user enters category {string} which do not exists")
     public void userEntersCategoryWhichDoNotExists(String category) throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandSearch"))
@@ -156,23 +268,25 @@ public class StepDefinitions {
                 .thenReturn(inputs.get("commandExit"));
         runApp();
     }
-    
-    @When ("user enters category {string} and searchTerm {string}")
-    public void userEntersCategoryAndSearchTerm (String category, String searchTerm) throws IOException, SQLException, ClassNotFoundException {
+
+    @When("user enters category {string} and searchTerm {string}")
+    public void userEntersCategoryAndSearchTerm(String category, String searchTerm) throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandSearch"))
                 .thenReturn(category)
                 .thenReturn(searchTerm)
                 .thenReturn(inputs.get("commandExit"));
         runApp();
-    }    
+    }
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
         //For debugging
-//        System.setOut(standardOut);
-//        System.out.println(outputStreamCaptor);
-        //*****************************************
+        System.setOut(standardOut);
+        System.out.println("****");
+        System.out.println("****");
+        System.out.println(outputStreamCaptor.toString());
+        System.out.println("****");
         assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
 
     }

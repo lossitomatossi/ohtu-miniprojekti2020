@@ -40,13 +40,6 @@ public class UserInterface {
         this.db = db;
     }
 
-    /*
-    protected UserInterface(BufferedReader br, DbCommands db) {
-        this.br = br;
-        mockUI = true;
-        this.db = db;
-    }
-     */
     /**
      * Launches the application's command-line UI
      */
@@ -218,6 +211,9 @@ public class UserInterface {
         if (results != null) {
             for (Object o : results) {
                 output.append(o.toString());
+            }
+            if (results.isEmpty()) {
+                return "Nothing found.";
             }
         }
 
