@@ -7,9 +7,8 @@ import ohtu.Youtube;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Array;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class for the application UI
@@ -49,14 +48,21 @@ public class UserInterface {
                 + "\n1 - help    | Prints help"
                 + "\n2 - book    | Stores book"
                 + "\n3 - youtube | Stores YouTube link"
-                + "\n4 - list    | Lists objects from specified category"
-                + "\n5 - search  | Searches for specified term";
+                + "\n4 - blog    | Stores blog"
+                + "\n5 - movie   | Stores movie"
+                + "\n6 - list    | Lists recommendations from specified category"
+                + "\n7 - search  | Searches for specified term"
+                + "\n8 - delete  | Deletes specified recommendation";
+
+        String categories = "Categories: book, youtube, blog, movie";
 
         System.out.println(help);
 
         while (true) {
             String msg = "";
-            System.out.print("\nEnter command: ");
+
+            System.out.println("\n\n\n\nEnter nothing to get help.");
+            System.out.print("Command: ");
             String command = br.readLine();
 
             switch (command.toLowerCase()) {
@@ -65,6 +71,7 @@ public class UserInterface {
                     System.out.println("Exiting..");
                     br.close();
                     return;
+                case "":
                 case "1":
                 case "help":
                     msg = help;
@@ -80,19 +87,34 @@ public class UserInterface {
                     msg = msg.isEmpty() ? "Youtube link added successfully!" : msg;
                     break;
                 case "4":
+                case "blog":
+                    //msg = store(getMovie());
+                    //msg = msg.isEmpty() ? "Blog added successfully!" : msg;
+                    break;
+                case "5":
+                case "movie":
+                    //msg = store(getMovie());
+                    //msg = msg.isEmpty() ? "Movie added successfully!" : msg;
+                    break;
+                case "6":
                 case "list":
-                    System.out.println("Categories: youtube, book");
+                    System.out.println(categories);
                     System.out.print("Enter category to list: ");
                     msg = search(br.readLine(), "");
                     break;
-                case "5":
+                case "7":
                 case "search":
-                    System.out.println("Categories: youtube, book");
+                    System.out.println(categories);
                     System.out.print("Enter category: ");
                     String category = br.readLine();
-                    System.out.print("Enter searchterm: ");
+                    System.out.print("Enter search term: ");
                     String searchTerm = br.readLine();
                     msg = search(category, searchTerm);
+                    break;
+                case "8":
+                case "delete":
+                    // String searchTerm = br.readLine();
+                    // msg = delete(item);
                     break;
                 default:
                     System.out.println(command.toLowerCase());
@@ -174,24 +196,108 @@ public class UserInterface {
     }
 
     /**
+     * Gets the data from user for the Blog recommendation in command-line
+     *
+     * @return Blog object or null
+     */
+//    protected Blog getBlog() throws IOException {
+//        System.out.println("Enter URL*: ");
+//        String url = br.readLine();
+//        if (url.isBlank()) {
+//            System.out.println("URL cannot be blank.");
+//            return null;
+//        }
+//
+//        System.out.println("Enter title*: ");
+//        String title = br.readLine();
+//        if (title.isBlank()) {
+//            title = "";
+//        }
+//
+//        System.out.println("Enter writer: ");
+//        String writer = br.readLine();
+//        if (writer.isBlank()) {
+//            writer = "";
+//        }
+//
+//        System.out.println("Enter date: ");
+//        String date = br.readLine();
+//        if (date.isBlank()) {
+//            date = "";
+//        }
+//
+//        return new Youtube(url, title, writer, date);
+//    }
+
+    /**
+     * Gets the data from user for the Movie recommendation in command-line
+     *
+     * @return Movie object or null
+     */
+//    protected Movie getMovie() throws IOException {
+//        System.out.println("Enter title*: ");
+//        String title = br.readLine();
+//        if (title.isBlank()) {
+//            System.out.println("Title cannot be blank.");
+//            return null;
+//        }
+//
+//        System.out.println("Enter director*: ");
+//        String director = br.readLine();
+//        if (director.isBlank()) {
+//            director = "";
+//        }
+//
+//        System.out.println("Enter release year: ");
+//        int year = -1;
+//        try {
+//            year = Integer.parseInt(br.readLine());
+//        } catch (NumberFormatException ignored) {
+//        }
+//
+//        System.out.println("Enter duration (min): ");
+//        int duration = -1;
+//        try {
+//            duration = Integer.parseInt(br.readLine());
+//        } catch (NumberFormatException ignored) {
+//        }
+//
+//        return new Movie(title, director, year, duration);
+//    }
+
+    /**
      * Searches for the searchTerm in database. If the searchTerm is empty, the
      * method lists all items in the category.
      *
-     * @param category Object can be Book or Youtube
+     * @param category Object can be Book, Youtube, Blog, Movie
      * @param searchTerm String used for searching
      * @return formatted String of found items
      */
     protected String search(String category, String searchTerm) throws SQLException {
         StringBuilder output = new StringBuilder();
 
-        ArrayList<?> results = null;
+        List<?> results;
+        int primaryLength = 20, secondaryLength = 20;
 
         if (category.equalsIgnoreCase("book")) {
             results = searchTerm.isEmpty() ? db.listBook() : db.searchBook(searchTerm);
 
+            if (results.isEmpty()) {
+                return "Nothing found.";
+            }
+
+            for (Object o : results) {
+                primaryLength = Math.max(((Book) o).getTitle().length(), primaryLength);
+                secondaryLength = Math.max(((Book) o).getAuthor().length(), secondaryLength);
+            }
+
+            for (Object o: results) {
+                ((Book) o).setLengths(primaryLength, secondaryLength);
+            }
+
             // Header
-            output.append(String.format("%-41s", "Title")).append(" ")
-                    .append(String.format("%-21s", "Author")).append(" ")
+            output.append(String.format("%-" + primaryLength + "s", "Title")).append(" ")
+                    .append(String.format("%-" + secondaryLength + "s", "Author")).append(" ")
                     .append(String.format("%-6s", "Year")).append(" ")
                     .append(String.format("%-7s", "Pages")).append(" ")
                     .append("ISBN").append("\n");
@@ -199,22 +305,41 @@ public class UserInterface {
         } else if (category.equalsIgnoreCase("youtube")) {
             results = searchTerm.isEmpty() ? db.listYoutube() : db.searchYoutube(searchTerm);
 
-            // Header
-            output.append(String.format("%-41s", "URL")).append(" ")
-                    .append(String.format("%-41s", "Title")).append(" ")
-                    .append(String.format("%-6s", "Created")).append(" ")
-                    .append("Description").append("\n");
-        } else {
-            return "No such category.";
-        }
-
-        if (results != null) {
-            for (Object o : results) {
-                output.append(o.toString());
-            }
             if (results.isEmpty()) {
                 return "Nothing found.";
             }
+
+            for (Object o : results) {
+                primaryLength = Math.max(((Youtube) o).getUrl().length(), primaryLength);
+                secondaryLength = Math.max(((Youtube) o).getTitle().length(), secondaryLength);
+            }
+
+            for (Object o: results) {
+                ((Youtube) o).setLengths(primaryLength, secondaryLength);
+            }
+
+            // Header
+            output.append(String.format("%-" + primaryLength + "s", "URL")).append(" ")
+                    .append(String.format("%-" + secondaryLength + "s", "Title")).append(" ")
+                    .append(String.format("%-10s", "Created")).append(" ")
+                    .append("Description").append("\n");
+        }
+        // TODO
+        //else if (category.equalsIgnoreCase("blog")) {
+            // results = searchTerm.isEmpty() ? db.listBlog() : db.searchBlog(searchTerm);
+
+            // Header
+        //} else if (category.equalsIgnoreCase("movie")) {
+            // results = searchTerm.isEmpty() ? db.listMovie() : db.searchMovie(searchTerm);
+
+            // Header
+        //}
+        else {
+            return "No such category.";
+        }
+
+        for (Object o : results) {
+            output.append(o.toString());
         }
 
         return output.toString();

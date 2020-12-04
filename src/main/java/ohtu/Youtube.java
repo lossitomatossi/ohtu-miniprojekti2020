@@ -8,16 +8,18 @@ import java.util.Objects;
  * @author julinden
  */
 public class Youtube {
-    private String url;
-    private String title;
+    private String url, title, description;
     private Date date;
-    private String description;
+    private int urlLength, titleLength;
     
     public Youtube(String url, String title, String description) {
         this.url = url;
         this.title = title;
         this.date = new Date(System.currentTimeMillis());
         this.description = description;
+
+        urlLength = url.length();
+        titleLength = title.length();
     }
 
     public String getUrl() {
@@ -51,7 +53,12 @@ public class Youtube {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public void setLengths(int primary, int secondary) {
+        urlLength = primary;
+        titleLength = secondary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o == this) {
@@ -74,9 +81,9 @@ public class Youtube {
     
     @Override
     public String toString() {
-        return String.format("%-41s", url) + " "
-                + String.format("%-41s", title) + " "
-                + String.format("%-6s", date) + " "
+        return String.format("%-" + urlLength + "s", url) + " "
+                + String.format("%-" + titleLength + "s", title) + " "
+                + String.format("%-10s", date) + " "
                 + description + "\n";
     }
 }

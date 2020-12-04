@@ -4,23 +4,26 @@ import java.util.Objects;
 
 public class Book {
 
-    private String title;
-    private String author;
-    private int year;
-    private int pages;
-    private String isbn;
+    private String title, author, isbn;
+    private int year, pages, titleLength, authorLength;
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
+
+        titleLength = title.length();
+        authorLength = author.length();
     }
-    
+
     public Book(String title, String author, int year, int pages, String isbn) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.pages = pages;
         this.isbn = isbn;
+
+        titleLength =  title.length();
+        authorLength = author.length();
     }
 
     public void setTitle(String title) {
@@ -62,7 +65,12 @@ public class Book {
     public String getIsbn() {
         return isbn;
     }
-    
+
+    public void setLengths(int primary, int secondary) {
+        titleLength = primary;
+        authorLength = secondary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if(o == this) {
@@ -86,11 +94,11 @@ public class Book {
     @Override
     public String toString() {
         String yearFormatted = (year == -1) ? "-" : String.valueOf(year);
-        String pagesFormatted= (year == -1) ? "-" : String.valueOf(pages);
+        String pagesFormatted = (year == -1) ? "-" : String.valueOf(pages);
         String isbnFormatted = isbn.isEmpty() ? "-" : isbn;
 
-        return String.format("%-41s", title) + " "
-                + String.format("%-21s", author) + " "
+        return String.format("%-" + titleLength + "s", title) + " "
+                + String.format("%-" + authorLength + "s", author) + " "
                 + String.format("%-6s", yearFormatted) + " "
                 + String.format("%-7s", pagesFormatted) + " "
                 + isbnFormatted + "\n";

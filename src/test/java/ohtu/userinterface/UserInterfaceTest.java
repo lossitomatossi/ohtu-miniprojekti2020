@@ -111,8 +111,8 @@ public class UserInterfaceTest {
 
         String actualOutput = output.toString();
 
-        assertTrue(actualOutput.contains("Title                                     Author                Year   Pages   ISBN"));
-        assertTrue(actualOutput.contains("URL                                       Title                                     Created Description"));
+        assertTrue(actualOutput.contains("Refactoring          Martin Fowler        2018   448     978-0134757599"));
+        assertTrue(actualOutput.contains("https://www.youtube.com/watch?v=TRcReyRYIMg What is Scrum?       " + yt.getDate() + " "));
     }
 
     @Test
@@ -131,7 +131,7 @@ public class UserInterfaceTest {
 
         String actualOutput = output.toString();
 
-        assertTrue(actualOutput.contains("URL                                       Title                                     Created Description"));
+        assertTrue(actualOutput.contains("https://www.youtube.com/watch?v=TRcReyRYIMg What is Scrum?       " + yt.getDate() + " "));
     }
 
     @After

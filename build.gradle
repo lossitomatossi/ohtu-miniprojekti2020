@@ -43,7 +43,7 @@ repositories {
 
 dependencies {
     implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
-    compile 'commons-io:commons-io:2.8.0'
+    implementation 'commons-io:commons-io:2.8.0'
     testImplementation 'io.cucumber:cucumber-java:6.9.0'
     testImplementation 'io.cucumber:cucumber-junit:6.9.0'
     testImplementation 'junit:junit:4.13.1'
