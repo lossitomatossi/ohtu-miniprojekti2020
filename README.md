@@ -10,6 +10,8 @@
 
 [Burndown chart](https://docs.google.com/spreadsheets/d/e/2PACX-1vTmBDwEEIEIljKgVgncTifNyLlCUqedPLnNmPdHPP6vrmpO1Sr8TnvkzvKwMOQGXnKHZeJUL-o2w2K_/pubchart?oid=1130428625&format=image)
 
+[Google sheets](https://docs.google.com/spreadsheets/d/1sGVq349mKmRQ_noFouEtAV1N4oND8W4fjCAEKfueNR4/edit?usp=sharing)
+
 ### Testit
 Komennolla `gradlew test`.
 
