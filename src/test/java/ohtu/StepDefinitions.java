@@ -54,6 +54,12 @@ public class StepDefinitions {
         inputs.put("commandYoutube", "youtube");
 
     }
+    
+    @Given("command search is selected")
+    public void commandSearchSelected() throws IOException {
+        inputs.put("commandSearch", "search");
+
+    }
 
     @Given("book {string} by writer {string} is successfully added on the list")
     public void bookIsSuccessfullyAddedOnTheList(String title, String writer) throws IOException, SQLException, ClassNotFoundException {
@@ -141,6 +147,25 @@ public class StepDefinitions {
 
         runApp();
     }
+    
+    @When ("user enters category {string} which do not exists")
+    public void userEntersCategoryWhichDoNotExists(String category) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandSearch"))
+                .thenReturn(category)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+    
+    @When ("user enters category {string} and searchTerm {string}")
+    public void userEntersCategoryAndSearchTerm (String category, String searchTerm) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandSearch"))
+                .thenReturn(category)
+                .thenReturn(searchTerm)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }    
 
     @Then("system will respond with {string}")
     public void systemWillRespondWith(String expectedOutput) {
