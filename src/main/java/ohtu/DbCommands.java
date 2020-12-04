@@ -192,4 +192,8 @@ public class DbCommands {
         return false;
     }
 
+    public void closeDbConnection() throws SQLException {
+        db.close();
+    }
+
 }

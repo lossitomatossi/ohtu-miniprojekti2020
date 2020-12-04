@@ -18,7 +18,6 @@ public class UserInterface {
 
     private final DbCommands db;
     private final BufferedReader br;
-    private final boolean mockUI;
 
     /**
      * Constructor
@@ -28,20 +27,26 @@ public class UserInterface {
     public UserInterface(String dbName) throws SQLException, ClassNotFoundException {
         br = new BufferedReader(new InputStreamReader(System.in));
         db = new DbCommands(dbName);
-        mockUI = false;
     }
 
     /**
      * Constructor for testing
      *
      * @param br Mock command-line reader
+     * @param db Test database manager
      */
-    protected UserInterface(BufferedReader br) throws SQLException, ClassNotFoundException {
+    protected UserInterface(BufferedReader br, DbCommands db) {
         this.br = br;
-        mockUI = true;
-        db = new DbCommands("jdbc:sqlite:testing.db");
+        this.db = db;
     }
 
+    /*
+    protected UserInterface(BufferedReader br, DbCommands db) {
+        this.br = br;
+        mockUI = true;
+        this.db = db;
+    }
+     */
     /**
      * Launches the application's command-line UI
      */
@@ -189,9 +194,7 @@ public class UserInterface {
         ArrayList<?> results = null;
 
         if (category.equalsIgnoreCase("book")) {
-            if (!mockUI) {
-                results = searchTerm.isEmpty() ? db.listBook() : db.searchBook(searchTerm);
-            }
+            results = searchTerm.isEmpty() ? db.listBook() : db.searchBook(searchTerm);
 
             // Header
             output.append(String.format("%-41s", "Title")).append(" ")
@@ -201,9 +204,7 @@ public class UserInterface {
                     .append("ISBN").append("\n");
 
         } else if (category.equalsIgnoreCase("youtube")) {
-            if (!mockUI) {
-                results = searchTerm.isEmpty() ? db.listYoutube() : db.searchYoutube(searchTerm);
-            }
+            results = searchTerm.isEmpty() ? db.listYoutube() : db.searchYoutube(searchTerm);
 
             // Header
             output.append(String.format("%-41s", "URL")).append(" ")
@@ -227,7 +228,8 @@ public class UserInterface {
      * Stores the object (Book, Youtube) to the database
      *
      * @param o Object can be Book or Youtube
-     * @return String empty string if storing object was successful, otherwise an error
+     * @return String empty string if storing object was successful, otherwise
+     * an error
      */
     protected String store(Object o) throws SQLException {
         if (db.contains(o)) {
@@ -235,11 +237,7 @@ public class UserInterface {
         }
 
         if (o != null) {
-            if (mockUI) {
-                System.out.println(o);
-            } else {
-                db.add(o);
-            }
+            db.add(o);
             return "";
         }
         return "An unknown error has occurred.";
