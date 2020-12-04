@@ -19,6 +19,7 @@ public class UserInterface {
     private final DbCommands db;
     private final BufferedReader br;
     private final boolean mockUI;
+    private final boolean mockUiDb;
 
     /**
      * Constructor
@@ -29,6 +30,7 @@ public class UserInterface {
         br = new BufferedReader(new InputStreamReader(System.in));
         db = new DbCommands(dbName);
         mockUI = false;
+        mockUiDb = false;
     }
 
     /**
@@ -40,7 +42,17 @@ public class UserInterface {
         this.br = br;
         mockUI = true;
         db = new DbCommands("jdbc:sqlite:testing.db");
+        mockUiDb = false;
+
     }
+    
+    protected UserInterface(BufferedReader br, String dbName) throws SQLException, ClassNotFoundException {
+        this.br = br;
+        db = new DbCommands(dbName);
+        mockUI = false;
+        mockUiDb = true;
+    }
+    
 
     /**
      * Launches the application's command-line UI
@@ -201,6 +213,7 @@ public class UserInterface {
                     .append("ISBN").append("\n");
 
         } else if (category.equalsIgnoreCase("youtube")) {
+            
             if (!mockUI) {
                 results = searchTerm.isEmpty() ? db.listYoutube() : db.searchYoutube(searchTerm);
             }
@@ -213,12 +226,20 @@ public class UserInterface {
         } else {
             return "No such category.";
         }
-
+        
+        if(mockUI) {
+            return output.toString();
+        }
+        
         if (results != null) {
             for (Object o : results) {
                 output.append(o.toString());
             }
+            if (results.isEmpty()) {
+                return "Nothing found.";
+            }
         }
+        
 
         return output.toString();
     }
@@ -235,8 +256,11 @@ public class UserInterface {
         }
 
         if (o != null) {
-            if (mockUI) {
+            if (mockUI || mockUiDb) {
                 System.out.println(o);
+                if (mockUiDb) {
+                    db.add(o);
+                }
             } else {
                 db.add(o);
             }
