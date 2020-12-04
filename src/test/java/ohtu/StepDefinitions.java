@@ -42,7 +42,7 @@ public class StepDefinitions {
         System.setOut(standardOut);
         dbc.closeDbConnection();
         String msg = new File(testDatabase).delete() ? "" + testDatabase + " deleted succesfully" : "Failed to delete " + testDatabase;
-//        System.out.println("***\n" + msg + "***");
+//        System.out.println("***\n" + msg + "\n***");
     }
 
     @Given("command book is selected")

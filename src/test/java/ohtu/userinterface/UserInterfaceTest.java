@@ -21,6 +21,7 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
 public class UserInterfaceTest {
 
+    final PrintStream standardOut = System.out;
     final String testDatabase = "testing.db";
     DbCommands dbc;
 
@@ -135,9 +136,9 @@ public class UserInterfaceTest {
 
     @After
     public void returnSystem() throws SQLException {
-        System.setOut(System.out);
+        System.setOut(standardOut);
         dbc.closeDbConnection();
         String msg = new File(testDatabase).delete() ? "" + testDatabase + " deleted succesfully" : "Failed to delete " + testDatabase;
-        //System.out.println(msg);
+        //System.out.println("***\n" + msg + "\n***");
     }
 }
