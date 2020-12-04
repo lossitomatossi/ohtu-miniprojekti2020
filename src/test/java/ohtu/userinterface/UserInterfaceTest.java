@@ -97,15 +97,21 @@ public class UserInterfaceTest {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
+        Book b = new Book("Refactoring", "Martin Fowler", 2018, 448, "978-0134757599");
+        Youtube yt = new Youtube("https://www.youtube.com/watch?v=TRcReyRYIMg", "What is Scrum?", "");
+
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("list", "book", "list", "youtube", "exit");
 
         UserInterface app = new UserInterface(br, dbc);
+        app.store(b);
+        app.store(yt);
         app.commandLine();
 
         String actualOutput = output.toString();
 
         assertTrue(actualOutput.contains("Title                                     Author                Year   Pages   ISBN"));
+        assertTrue(actualOutput.contains("URL                                       Title                                     Created Description"));
     }
 
     @Test
@@ -113,10 +119,13 @@ public class UserInterfaceTest {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         System.setOut(new PrintStream(output));
 
+        Youtube yt = new Youtube("https://www.youtube.com/watch?v=TRcReyRYIMg", "What is Scrum?", "");
+
         BufferedReader br = Mockito.mock(BufferedReader.class);
-        Mockito.when(br.readLine()).thenReturn("search", "youtube", "test", "exit");
+        Mockito.when(br.readLine()).thenReturn("search", "youtube", "scrum", "exit");
 
         UserInterface app = new UserInterface(br, dbc);
+        app.store(yt);
         app.commandLine();
 
         String actualOutput = output.toString();
