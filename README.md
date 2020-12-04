@@ -20,6 +20,4 @@ Komennolla `gradlew checkstyleMain`, jonka tulokset löytyvät avaamalla `build/
 ### JAR-tiedoston luominen
 Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build\libs\lukuvinkkikirjasto-all.jar`.
 
-<figure class="video_container">
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTmBDwEEIEIljKgVgncTifNyLlCUqedPLnNmPdHPP6vrmpO1Sr8TnvkzvKwMOQGXnKHZeJUL-o2w2K_/pubchart?oid=1130428625&amp;format=image"></iframe>
-</figure>
+[Burndown chart](https://docs.google.com/spreadsheets/d/e/2PACX-1vTmBDwEEIEIljKgVgncTifNyLlCUqedPLnNmPdHPP6vrmpO1Sr8TnvkzvKwMOQGXnKHZeJUL-o2w2K_/pubchart?oid=1130428625&format=image)
