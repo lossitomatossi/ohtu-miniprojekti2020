@@ -2,6 +2,7 @@ package ohtu.userinterface;
 
 import ohtu.Book;
 import ohtu.DbCommands;
+import ohtu.Movie;
 import ohtu.Youtube;
 
 import java.io.BufferedReader;
@@ -88,13 +89,13 @@ public class UserInterface {
                     break;
                 case "4":
                 case "blog":
-                    //msg = store(getMovie());
+                    //msg = store(getBlog());
                     //msg = msg.isEmpty() ? "Blog added successfully!" : msg;
                     break;
                 case "5":
                 case "movie":
-                    //msg = store(getMovie());
-                    //msg = msg.isEmpty() ? "Movie added successfully!" : msg;
+                    msg = store(getMovie());
+                    msg = msg.isEmpty() ? "Movie added successfully!" : msg;
                     break;
                 case "6":
                 case "list":
@@ -234,36 +235,36 @@ public class UserInterface {
      *
      * @return Movie object or null
      */
-//    protected Movie getMovie() throws IOException {
-//        System.out.println("Enter title*: ");
-//        String title = br.readLine();
-//        if (title.isBlank()) {
-//            System.out.println("Title cannot be blank.");
-//            return null;
-//        }
-//
-//        System.out.println("Enter director*: ");
-//        String director = br.readLine();
-//        if (director.isBlank()) {
-//            director = "";
-//        }
-//
-//        System.out.println("Enter release year: ");
-//        int year = -1;
-//        try {
-//            year = Integer.parseInt(br.readLine());
-//        } catch (NumberFormatException ignored) {
-//        }
-//
-//        System.out.println("Enter duration (min): ");
-//        int duration = -1;
-//        try {
-//            duration = Integer.parseInt(br.readLine());
-//        } catch (NumberFormatException ignored) {
-//        }
-//
-//        return new Movie(title, director, year, duration);
-//    }
+    protected Movie getMovie() throws IOException {
+        System.out.println("Enter title*: ");
+        String title = br.readLine();
+        if (title.isBlank()) {
+            System.out.println("Title cannot be blank.");
+            return null;
+        }
+
+        System.out.println("Enter director: ");
+        String director = br.readLine();
+        if (director.isBlank()) {
+            director = "";
+        }
+
+        System.out.println("Enter release year: ");
+        int year = -1;
+        try {
+            year = Integer.parseInt(br.readLine());
+        } catch (NumberFormatException ignored) {
+        }
+
+        System.out.println("Enter duration (min): ");
+        int duration = -1;
+        try {
+            duration = Integer.parseInt(br.readLine());
+        } catch (NumberFormatException ignored) {
+        }
+
+        return new Movie(title, director, year, duration);
+    }
 
     /**
      * Searches for the searchTerm in database. If the searchTerm is empty, the
@@ -323,18 +324,21 @@ public class UserInterface {
                     .append(String.format("%-" + secondaryLength + "s", "Title")).append(" ")
                     .append(String.format("%-10s", "Created")).append(" ")
                     .append("Description").append("\n");
-        }
-        // TODO
-        //else if (category.equalsIgnoreCase("blog")) {
-            // results = searchTerm.isEmpty() ? db.listBlog() : db.searchBlog(searchTerm);
-
-            // Header
-        //} else if (category.equalsIgnoreCase("movie")) {
+        } else if (category.equalsIgnoreCase("movie")  && false) {
+            // TODO
             // results = searchTerm.isEmpty() ? db.listMovie() : db.searchMovie(searchTerm);
 
             // Header
-        //}
-        else {
+            output.append(String.format("%-" + primaryLength + "s", "Title")).append(" ")
+                    .append(String.format("%-" + secondaryLength + "s", "Director")).append(" ")
+                    .append(String.format("%-6s", "Year")).append(" ")
+                    .append("Length (min)").append("\n");
+        } else if (category.equalsIgnoreCase("blog") && false) {
+            // TODO
+            // results = searchTerm.isEmpty() ? db.listBlog() : db.searchBlog(searchTerm);
+
+            // Header
+        } else {
             return "No such category.";
         }
 

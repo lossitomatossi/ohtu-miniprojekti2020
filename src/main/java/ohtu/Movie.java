@@ -86,7 +86,7 @@ public class Movie {
         String lengthFormatted = (length == -1) ? "-" : String.valueOf(length);
 
         return String.format("%-" + titleLength + "s", title) + " "
-                + String.format("%-" + directorLength + "s", director) + " "
+                + String.format("%-" + directorLength + "s", directorFormatted) + " "
                 + String.format("%-6s", yearFormatted) + " "
                 + lengthFormatted + "\n";
     }

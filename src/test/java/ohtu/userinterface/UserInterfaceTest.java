@@ -3,6 +3,7 @@ package ohtu.userinterface;
 import static org.junit.Assert.*;
 
 import ohtu.Book;
+import ohtu.Movie;
 import ohtu.Youtube;
 import ohtu.DbCommands;
 import org.junit.After;
@@ -73,6 +74,19 @@ public class UserInterfaceTest {
         // Date has to be manually set to be identical. IntelliJ noticed this, Gradle didn't.
         // As an example, if the test is run at midnight during date change, it would fail.
         expected.setDate(actual.getDate());
+
+        assertTrue(new ReflectionEquals(expected).matches(actual));
+    }
+
+    @Test
+    public void movieParsedCorrectly() throws IOException, SQLException, ClassNotFoundException {
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("Matrix", "The Wachowskis", "1995", "136");
+
+        UserInterface app = new UserInterface(br, dbc);
+
+        Movie actual = app.getMovie();
+        Movie expected = new Movie("Matrix", "The Wachowskis", 1995, 136);
 
         assertTrue(new ReflectionEquals(expected).matches(actual));
     }
