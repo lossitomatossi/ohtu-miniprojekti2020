@@ -79,10 +79,10 @@ public class Blog {
     @Override
     public String toString() {
         String writerFormatted = writer.isEmpty() ? "-" : writer;
-
+        
         return String.format("%-" + urlLength + "s", url) + " "
                 + String.format("%-" + titleLength + "s", title) + " "
-                + String.format("%-" + writerLength + "s", writer) + " "
+                + String.format("%-" + writerLength + "s", writerFormatted) + " "
                 + String.format("%-10s", date) + "\n";
     }
 }

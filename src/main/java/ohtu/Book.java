@@ -94,7 +94,7 @@ public class Book {
     @Override
     public String toString() {
         String yearFormatted = (year == -1) ? "-" : String.valueOf(year);
-        String pagesFormatted = (year == -1) ? "-" : String.valueOf(pages);
+        String pagesFormatted = (pages == -1) ? "-" : String.valueOf(pages);
         String isbnFormatted = isbn.isEmpty() ? "-" : isbn;
 
         return String.format("%-" + titleLength + "s", title) + " "
