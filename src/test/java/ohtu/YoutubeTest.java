@@ -26,4 +26,9 @@ public class YoutubeTest {
     public void dateIsCorrect() {
         assertEquals(new Date(System.currentTimeMillis()), youtube.getDate());
     }
+    
+    @Test
+    public void toStringIsCorrect() {
+        assertEquals("www.com title " + youtube.getDate() + " description" + "\n", youtube.toString());
+    }
 }

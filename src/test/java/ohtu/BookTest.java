@@ -25,4 +25,12 @@ public class BookTest {
     public void constructorCreatesAdditionalInfoBook() {
         assertEquals(2015, additionalInfoBook.getYear());
     }
+    
+    @Test
+    public void toStringIsCorrect() {
+        book.setYear(-1);
+        book.setPages(-1);
+        book.setIsbn("");
+        assertEquals("Aapinen Agricola -      -       -" + "\n", book.toString());
+    }
 }

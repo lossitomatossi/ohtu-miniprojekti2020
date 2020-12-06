@@ -11,12 +11,17 @@ public class MovieTest {
 
     @Before
     public void setUp() {
-        movie = new Movie("Rocky 9", "Sylvester Stallone", 2020, 179);
+        movie = new Movie("Rocky 9", "Stallone", 2020, 179);
     }
 
     @Test
     public void constructorCreatesMovie() {
         assertEquals("Rocky 9", movie.getTitle());
+    }
+    
+    @Test
+    public void toStringIsCorrect() {
+        assertEquals("Rocky 9 Stallone 2020   179" + "\n", movie.toString());
     }
 
 }
