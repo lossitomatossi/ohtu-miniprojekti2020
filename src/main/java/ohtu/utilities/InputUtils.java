@@ -18,6 +18,7 @@ public class InputUtils {
     public InputUtils(BufferedReader br) {
         this.br = br;
     }
+
     public String getCommands(){
         return "\nNumber or name of the command can be used."
                 + "\n0 - exit    | Exits the application"
@@ -29,13 +30,12 @@ public class InputUtils {
                 + "\n6 - list    | Lists suggestions from specified category"
                 + "\n7 - search  | Searches for specified suggestion"
                 + "\n8 - delete  | Deletes specified suggestion";
-
-       
     }
     
     public String getCategories(){
         return "Categories: book, youtube, blog, movie";
     }
+
     /**
      * Gets the data from user for the book suggestion in command-line
      *
@@ -61,6 +61,7 @@ public class InputUtils {
         try {
             year = Integer.parseInt(br.readLine());
         } catch (NumberFormatException ignored) {
+            System.out.println("Non-integer argument, no year added");
         }
 
         System.out.println("Enter pages: ");
@@ -68,6 +69,7 @@ public class InputUtils {
         try {
             pages = Integer.parseInt(br.readLine());
         } catch (NumberFormatException ignored) {
+            System.out.println("Non-integer argument, no page count added");
         }
 
         System.out.println("Enter ISBN: ");
@@ -139,9 +141,14 @@ public class InputUtils {
         if (dateInput.isBlank()) {
             date = LocalDate.now();
         } else {
-            List<Integer> dateArray = Arrays.stream(dateInput.split("-"))
-                    .map(Integer::parseInt).collect(Collectors.toList());
-            date = LocalDate.of(dateArray.get(0), dateArray.get(1), dateArray.get(2));
+            try {
+                List<Integer> dateArray = Arrays.stream(dateInput.split("-"))
+                        .map(Integer::parseInt).collect(Collectors.toList());
+                date = LocalDate.of(dateArray.get(0), dateArray.get(1), dateArray.get(2));
+            } catch (NumberFormatException e) {
+                System.out.println("Date incorrectly formatted! Added current date instead.\n");
+                date = LocalDate.now();
+            }
         }
 
         return new Blog(url, title, writer, date);

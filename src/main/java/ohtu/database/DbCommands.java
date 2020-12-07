@@ -160,7 +160,6 @@ public class DbCommands {
                     r.getString("writer"),
                     r.getDate("date").toLocalDate()
                 );
-
                 blogs.add(blog);
             }
         } catch (Exception ignored) {
