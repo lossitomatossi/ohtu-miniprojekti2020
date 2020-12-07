@@ -188,7 +188,7 @@ public class DbCommands {
     public ArrayList<Blog> searchBlog(String searchTerm) throws SQLException {
         ArrayList<Blog> foundBlogs = new ArrayList<>();
 
-        PreparedStatement p = db.prepareStatement("SELECT * FROM Blogs WHERE url LIKE ? OR writer LIKE ?");
+        PreparedStatement p = db.prepareStatement("SELECT * FROM Blogs WHERE title LIKE ? OR writer LIKE ?");
         p.setString(1, '%' + searchTerm + '%');
         p.setString(2, '%' + searchTerm + '%');
         ResultSet r = p.executeQuery();
