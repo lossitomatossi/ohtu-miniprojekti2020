@@ -56,8 +56,8 @@ public class UserInterfaceTest {
         Mockito.when(br.readLine()).thenReturn("Ayy", "Wizard", "1995", "250", "ABC1");
 
         UserInterface app = new UserInterface(br, dbc);
-
-        Book actual = app.getBook();
+        
+        Book actual = app.input.getBook();
         Book expected = new Book("Ayy", "Wizard", 1995, 250, "ABC1");
 
         assertTrue(new ReflectionEquals(expected).matches(actual));
@@ -70,7 +70,7 @@ public class UserInterfaceTest {
 
         UserInterface app = new UserInterface(br, dbc);
 
-        Youtube actual = app.getYoutube();
+        Youtube actual = app.input.getYoutube();
         Youtube expected = new Youtube("https://youtu.be/placeholder", "Cat video", "Watch soon!");
 
         // Date has to be manually set to be identical. IntelliJ noticed this, Gradle didn't.
@@ -87,7 +87,7 @@ public class UserInterfaceTest {
 
         UserInterface app = new UserInterface(br, dbc);
 
-        Movie actual = app.getMovie();
+        Movie actual = app.input.getMovie();
         Movie expected = new Movie("Matrix", "The Wachowskis", 1995, 136);
 
         assertTrue(new ReflectionEquals(expected).matches(actual));
@@ -100,7 +100,7 @@ public class UserInterfaceTest {
 
         UserInterface app = new UserInterface(br, dbc);
 
-        Blog actual = app.getBlog();
+        Blog actual = app.input.getBlog();
         Blog expected = new Blog("https://example.com", "Blog title", "Suzuki", LocalDate.of(2020, 2, 2));
 
         assertTrue(new ReflectionEquals(expected).matches(actual));
@@ -115,7 +115,7 @@ public class UserInterfaceTest {
         Mockito.when(br.readLine()).thenReturn("", "Wizard", "1995", "250", "ABC1");
 
         UserInterface app = new UserInterface(br, dbc);
-        app.getBook();
+        app.input.getBook();
 
         String actualOutput = output.toString();
 
