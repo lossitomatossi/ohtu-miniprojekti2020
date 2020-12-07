@@ -118,7 +118,7 @@ public class UserInterface {
             System.out.println(msg);
         }
     }
-    
+
     /**
      * Searches for the searchTerm in database. If the searchTerm is empty, the
      * method lists all items in the category.
