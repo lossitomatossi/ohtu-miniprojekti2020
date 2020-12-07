@@ -1,4 +1,4 @@
-package utilities;
+package ohtu.utilities;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import utilities.InputUtils;
+import ohtu.utilities.InputUtils;
 
 /**
  * Class for the application UI
