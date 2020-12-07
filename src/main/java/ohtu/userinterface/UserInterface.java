@@ -23,7 +23,7 @@ public class UserInterface {
 
     private final DbCommands db;
     private final BufferedReader br;
-    private final InputUtils input;
+    final InputUtils input;
 
     /**
      * Constructor
