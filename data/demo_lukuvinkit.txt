@@ -1,0 +1,6 @@
+book;Refactoring;Martin Fowler;2018;448;978-0134757599
+book;The Art of Doing Science and Engineering: Learning to Learn;Richard W. Hamming;2020;432;978-1732265172
+youtube;https://www.youtube.com/watch?v=TRcReyRYIMg;What is Scrum?;Scrum introduction
+rec;
+movie;Matrix;The Wachowskis;1995;136
+blog;www.datavetenskapbloggen;Viktig text;Karl XVI Gustav;12/06/2020
