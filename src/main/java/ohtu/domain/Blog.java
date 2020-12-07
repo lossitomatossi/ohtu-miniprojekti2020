@@ -1,17 +1,15 @@
-package ohtu;
+package ohtu.domain;
 
+import java.time.LocalDate;
 import java.util.Objects;
-import java.sql.Date;
 
 public class Blog {
 
-    private String url;
-    private String title;
-    private String writer;
-    private Date date;
+    private String url, title, writer;
+    private LocalDate date;
     private int urlLength, titleLength, writerLength;
 
-    public Blog(String url, String title, String writer, Date date) {
+    public Blog(String url, String title, String writer, LocalDate date) {
         this.url = url;
         this.title = title;
         this.writer = writer;
@@ -46,15 +44,19 @@ public class Blog {
         this.writer = writer;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
-    
-    
+
+    public void setLengths(int primary, int secondary, int tertiary) {
+        urlLength = primary;
+        titleLength = secondary;
+        writerLength = tertiary;
+    }
     
     @Override
     public boolean equals(Object o) {

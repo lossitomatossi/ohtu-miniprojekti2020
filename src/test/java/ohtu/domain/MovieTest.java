@@ -1,7 +1,8 @@
-package ohtu;
+package ohtu.domain;
 
 import static org.junit.Assert.assertEquals;
 
+import ohtu.domain.Movie;
 import org.junit.Before;
 import org.junit.Test;
 

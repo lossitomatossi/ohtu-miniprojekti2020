@@ -1,6 +1,6 @@
-package ohtu;
+package ohtu.domain;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -9,13 +9,13 @@ import java.util.Objects;
  */
 public class Youtube {
     private String url, title, description;
-    private Date date;
+    private LocalDate date;
     private int urlLength, titleLength;
     
     public Youtube(String url, String title, String description) {
         this.url = url;
         this.title = title;
-        this.date = new Date(System.currentTimeMillis());
+        this.date = LocalDate.now();
         this.description = description;
 
         urlLength = url.length();
@@ -38,11 +38,11 @@ public class Youtube {
         this.title = title;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

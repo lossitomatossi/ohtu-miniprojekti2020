@@ -19,4 +19,4 @@ Feature: As a user I can add a new book to the list
         Given book "Refactoring" by writer "Martin Fowler" is successfully added on the list
         And   command book is selected
         When  user enters book title "Refactoring" and writer "Martin Fowler"
-        Then  system will respond with "The recommendation already exists."
+        Then  system will respond with "The suggestion already exists."

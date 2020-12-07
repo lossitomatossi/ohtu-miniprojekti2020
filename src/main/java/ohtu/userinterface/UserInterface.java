@@ -1,15 +1,19 @@
 package ohtu.userinterface;
 
-import ohtu.Book;
-import ohtu.DbCommands;
-import ohtu.Movie;
-import ohtu.Youtube;
+import ohtu.database.DbCommands;
+import ohtu.domain.Blog;
+import ohtu.domain.Book;
+import ohtu.domain.Movie;
+import ohtu.domain.Youtube;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class for the application UI
@@ -51,9 +55,9 @@ public class UserInterface {
                 + "\n3 - youtube | Stores YouTube link"
                 + "\n4 - blog    | Stores blog"
                 + "\n5 - movie   | Stores movie"
-                + "\n6 - list    | Lists recommendations from specified category"
-                + "\n7 - search  | Searches for specified term"
-                + "\n8 - delete  | Deletes specified recommendation";
+                + "\n6 - list    | Lists suggestions from specified category"
+                + "\n7 - search  | Searches for specified suggestion"
+                + "\n8 - delete  | Deletes specified suggestion";
 
         String categories = "Categories: book, youtube, blog, movie";
 
@@ -89,8 +93,8 @@ public class UserInterface {
                     break;
                 case "4":
                 case "blog":
-                    //msg = store(getBlog());
-                    //msg = msg.isEmpty() ? "Blog added successfully!" : msg;
+                    msg = store(getBlog());
+                    msg = msg.isEmpty() ? "Blog added successfully!" : msg;
                     break;
                 case "5":
                 case "movie":
@@ -126,7 +130,7 @@ public class UserInterface {
     }
 
     /**
-     * Gets the data from user for the book recommendation in command-line
+     * Gets the data from user for the book suggestion in command-line
      *
      * @return Book object or null
      */
@@ -169,7 +173,7 @@ public class UserInterface {
     }
 
     /**
-     * Gets the data from user for the YouTube recommendation in command-line
+     * Gets the data from user for the YouTube suggestion in command-line
      *
      * @return Youtube object or null
      */
@@ -197,41 +201,47 @@ public class UserInterface {
     }
 
     /**
-     * Gets the data from user for the Blog recommendation in command-line
+     * Gets the data from user for the Blog suggestion in command-line
      *
      * @return Blog object or null
      */
-//    protected Blog getBlog() throws IOException {
-//        System.out.println("Enter URL*: ");
-//        String url = br.readLine();
-//        if (url.isBlank()) {
-//            System.out.println("URL cannot be blank.");
-//            return null;
-//        }
-//
-//        System.out.println("Enter title*: ");
-//        String title = br.readLine();
-//        if (title.isBlank()) {
-//            title = "";
-//        }
-//
-//        System.out.println("Enter writer: ");
-//        String writer = br.readLine();
-//        if (writer.isBlank()) {
-//            writer = "";
-//        }
-//
-//        System.out.println("Enter date: ");
-//        String date = br.readLine();
-//        if (date.isBlank()) {
-//            date = "";
-//        }
-//
-//        return new Youtube(url, title, writer, date);
-//    }
+    protected Blog getBlog() throws IOException {
+        System.out.println("Enter URL*: ");
+        String url = br.readLine();
+        if (url.isBlank()) {
+            System.out.println("URL cannot be blank.");
+            return null;
+        }
+
+        System.out.println("Enter title*: ");
+        String title = br.readLine();
+        if (title.isBlank()) {
+            title = "";
+        }
+
+        System.out.println("Enter writer: ");
+        String writer = br.readLine();
+        if (writer.isBlank()) {
+            writer = "";
+        }
+
+        System.out.println("Enter date (year-month-day): ");
+        String dateInput = br.readLine();
+        LocalDate date;
+
+        if (dateInput.isBlank()) {
+            date = LocalDate.now();
+        } else {
+            List<Integer> dateArray = Arrays.stream(dateInput.split("-"))
+                    .map(Integer::parseInt).collect(Collectors.toList());
+            date = LocalDate.of(dateArray.get(0), dateArray.get(1), dateArray.get(2));
+        }
+
+        return new Blog(url, title, writer, date);
+    }
 
     /**
-     * Gets the data from user for the Movie recommendation in command-line
+     * Gets the data from user for the Movie suggestion in command-line
      *
      * @return Movie object or null
      */
@@ -278,7 +288,7 @@ public class UserInterface {
         StringBuilder output = new StringBuilder();
 
         List<?> results;
-        int primaryLength = 20, secondaryLength = 20;
+        int[] lengths = {20, 20, 20};
 
         if (category.equalsIgnoreCase("book")) {
             results = searchTerm.isEmpty() ? db.listBook() : db.searchBook(searchTerm);
@@ -288,17 +298,17 @@ public class UserInterface {
             }
 
             for (Object o : results) {
-                primaryLength = Math.max(((Book) o).getTitle().length(), primaryLength);
-                secondaryLength = Math.max(((Book) o).getAuthor().length(), secondaryLength);
+                lengths[0] = Math.max(((Book) o).getTitle().length(), lengths[0]);
+                lengths[1] = Math.max(((Book) o).getAuthor().length(), lengths[1]);
             }
 
             for (Object o: results) {
-                ((Book) o).setLengths(primaryLength, secondaryLength);
+                ((Book) o).setLengths(lengths[0], lengths[1]);
             }
 
             // Header
-            output.append(String.format("%-" + primaryLength + "s", "Title")).append(" ")
-                    .append(String.format("%-" + secondaryLength + "s", "Author")).append(" ")
+            output.append(String.format("%-" + lengths[0] + "s", "Title")).append(" ")
+                    .append(String.format("%-" + lengths[1] + "s", "Author")).append(" ")
                     .append(String.format("%-6s", "Year")).append(" ")
                     .append(String.format("%-7s", "Pages")).append(" ")
                     .append("ISBN").append("\n");
@@ -311,33 +321,54 @@ public class UserInterface {
             }
 
             for (Object o : results) {
-                primaryLength = Math.max(((Youtube) o).getUrl().length(), primaryLength);
-                secondaryLength = Math.max(((Youtube) o).getTitle().length(), secondaryLength);
+                lengths[0] = Math.max(((Youtube) o).getUrl().length(), lengths[0]);
+                lengths[1] = Math.max(((Youtube) o).getTitle().length(), lengths[1]);
             }
 
             for (Object o: results) {
-                ((Youtube) o).setLengths(primaryLength, secondaryLength);
+                ((Youtube) o).setLengths(lengths[0], lengths[1]);
             }
 
             // Header
-            output.append(String.format("%-" + primaryLength + "s", "URL")).append(" ")
-                    .append(String.format("%-" + secondaryLength + "s", "Title")).append(" ")
+            output.append(String.format("%-" + lengths[0] + "s", "URL")).append(" ")
+                    .append(String.format("%-" + lengths[1] + "s", "Title")).append(" ")
                     .append(String.format("%-10s", "Created")).append(" ")
                     .append("Description").append("\n");
-        } else if (category.equalsIgnoreCase("movie")  && false) {
-            // TODO
-            // results = searchTerm.isEmpty() ? db.listMovie() : db.searchMovie(searchTerm);
+        } else if (category.equalsIgnoreCase("movie")) {
+            results = searchTerm.isEmpty() ? db.listMovie() : db.searchMovie(searchTerm);
+
+            for (Object o : results) {
+                lengths[0] = Math.max(((Movie) o).getTitle().length(), lengths[0]);
+                lengths[1] = Math.max(((Movie) o).getDirector().length(), lengths[1]);
+            }
+
+            for (Object o: results) {
+                ((Movie) o).setLengths(lengths[0], lengths[1]);
+            }
 
             // Header
-            output.append(String.format("%-" + primaryLength + "s", "Title")).append(" ")
-                    .append(String.format("%-" + secondaryLength + "s", "Director")).append(" ")
+            output.append(String.format("%-" + lengths[0] + "s", "Title")).append(" ")
+                    .append(String.format("%-" + lengths[1] + "s", "Director")).append(" ")
                     .append(String.format("%-6s", "Year")).append(" ")
                     .append("Length (min)").append("\n");
-        } else if (category.equalsIgnoreCase("blog") && false) {
-            // TODO
-            // results = searchTerm.isEmpty() ? db.listBlog() : db.searchBlog(searchTerm);
+        } else if (category.equalsIgnoreCase("blog")) {
+            results = searchTerm.isEmpty() ? db.listBlog() : db.searchBlog(searchTerm);
+
+            for (Object o : results) {
+                lengths[0] = Math.max(((Blog) o).getUrl().length(), lengths[0]);
+                lengths[1] = Math.max(((Blog) o).getTitle().length(), lengths[1]);
+                lengths[2] = Math.max(((Blog) o).getWriter().length(), lengths[2]);
+            }
+
+            for (Object o: results) {
+                ((Blog) o).setLengths(lengths[0], lengths[1], lengths[2]);
+            }
 
             // Header
+            output.append(String.format("%-" + lengths[0] + "s", "URL")).append(" ")
+                    .append(String.format("%-" + lengths[1] + "s", "Title")).append(" ")
+                    .append(String.format("%-" + lengths[2] + "s", "Writer")).append(" ")
+                    .append("Date").append("\n");
         } else {
             return "No such category.";
         }
@@ -358,7 +389,7 @@ public class UserInterface {
      */
     protected String store(Object o) throws SQLException {
         if (db.contains(o)) {
-            return "The recommendation already exists.";
+            return "The suggestion already exists.";
         }
 
         if (o != null) {

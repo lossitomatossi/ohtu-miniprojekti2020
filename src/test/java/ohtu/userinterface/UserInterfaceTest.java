@@ -2,10 +2,11 @@ package ohtu.userinterface;
 
 import static org.junit.Assert.*;
 
-import ohtu.Book;
-import ohtu.Movie;
-import ohtu.Youtube;
-import ohtu.DbCommands;
+import ohtu.domain.Blog;
+import ohtu.domain.Book;
+import ohtu.domain.Movie;
+import ohtu.domain.Youtube;
+import ohtu.database.DbCommands;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 import org.mockito.Mockito;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
@@ -87,6 +89,19 @@ public class UserInterfaceTest {
 
         Movie actual = app.getMovie();
         Movie expected = new Movie("Matrix", "The Wachowskis", 1995, 136);
+
+        assertTrue(new ReflectionEquals(expected).matches(actual));
+    }
+
+    @Test
+    public void blogParsedCorrectly() throws IOException, SQLException, ClassNotFoundException {
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("https://example.com", "Blog title", "Suzuki", "2020-2-2");
+
+        UserInterface app = new UserInterface(br, dbc);
+
+        Blog actual = app.getBlog();
+        Blog expected = new Blog("https://example.com", "Blog title", "Suzuki", LocalDate.of(2020, 2, 2));
 
         assertTrue(new ReflectionEquals(expected).matches(actual));
     }

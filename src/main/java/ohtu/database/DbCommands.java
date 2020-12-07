@@ -1,9 +1,12 @@
-package ohtu;
+package ohtu.database;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-import ohtu.database.Database;
+import ohtu.domain.Blog;
+import ohtu.domain.Book;
+import ohtu.domain.Movie;
+import ohtu.domain.Youtube;
 
 /**
  *
@@ -71,7 +74,7 @@ public class DbCommands {
         p.setString(1, y.getUrl());
         p.setString(2, y.getTitle());
         p.setString(3, y.getDescription());
-        p.setDate(4, y.getDate());
+        p.setDate(4, Date.valueOf(y.getDate()));
 
         p.executeUpdate();
 
@@ -83,7 +86,7 @@ public class DbCommands {
         p.setString(1, b.getUrl());
         p.setString(2, b.getTitle());
         p.setString(3, b.getWriter());
-        p.setDate(4, b.getDate());
+        p.setDate(4, Date.valueOf(b.getDate()));
 
         p.executeUpdate();
 
@@ -134,13 +137,25 @@ public class DbCommands {
                         r.getString("title"),
                         r.getString("description"));
 
-                youtubeLink.setDate(r.getDate("created"));
+                youtubeLink.setDate(r.getDate("created").toLocalDate());
                 youtubeLinks.add(youtubeLink);
             }
         } catch (Exception ignored) {
         }
 
         return youtubeLinks;
+    }
+
+    public ArrayList<Blog> listBlog() {
+        ArrayList<Blog> blogs = new ArrayList<>();
+
+        return blogs;
+    }
+
+    public ArrayList<Movie> listMovie() {
+        ArrayList<Movie> movies = new ArrayList<>();
+
+        return movies;
     }
 
     public ArrayList<Book> searchBook(String searchTerm) throws SQLException {
@@ -178,7 +193,7 @@ public class DbCommands {
                     r.getString("title"),
                     r.getString("description")
             );
-            youtubeLink.setDate(r.getDate("created"));
+            youtubeLink.setDate(r.getDate("created").toLocalDate());
             foundYoutubeLinks.add(youtubeLink);
         }
 
@@ -198,7 +213,7 @@ public class DbCommands {
                     r.getString("url"),
                     r.getString("title"),
                     r.getString("writer"),
-                    r.getDate("date")
+                    r.getDate("date").toLocalDate()
             ));
         }
 

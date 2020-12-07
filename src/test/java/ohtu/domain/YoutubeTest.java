@@ -1,7 +1,9 @@
-package ohtu;
+package ohtu.domain;
 
-import java.sql.Date;
+import java.time.LocalDate;
+
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +26,7 @@ public class YoutubeTest {
     
     @Test
     public void dateIsCorrect() {
-        assertEquals(new Date(System.currentTimeMillis()), youtube.getDate());
+        assertEquals(LocalDate.now(), youtube.getDate());
     }
     
     @Test

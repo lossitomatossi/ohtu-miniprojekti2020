@@ -1,5 +1,6 @@
 package ohtu;
 
+import ohtu.database.DbCommands;
 import ohtu.userinterface.UserInterface;
 
 import io.cucumber.java.After;

@@ -14,4 +14,4 @@ Feature: As a user I can add a new youtube to the list
         Given youtube url "youtube-url" with title "Video" is successfully added on the list
         And   command youtube is selected
         When  user enters youtube url "youtube-url" and title "Video"
-        Then  system will respond with "The recommendation already exists."
+        Then  system will respond with "The suggestion already exists."

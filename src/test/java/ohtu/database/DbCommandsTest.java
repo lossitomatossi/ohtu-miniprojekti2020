@@ -1,7 +1,12 @@
-package ohtu;
+package ohtu.database;
 
-import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+
+import ohtu.domain.Blog;
+import ohtu.domain.Book;
+import ohtu.domain.Movie;
+import ohtu.domain.Youtube;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -79,9 +84,9 @@ public class DbCommandsTest {
 
     @Test
     public void blogiaVoiHakeaNimenPerusteella() throws SQLException {
-        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", new Date(1996, 2, 2));
-        Blog b2 = new Blog("url2", "otsikko2", "kirjailija2", new Date(1997, 2, 2));
-        Blog b3 = new Blog("url3", "otsikko3", "kirjailija3", new Date(1998, 2, 2));
+        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", LocalDate.of(1996, 2, 2));
+        Blog b2 = new Blog("url2", "otsikko2", "kirjailija2", LocalDate.of(1997, 2, 2));
+        Blog b3 = new Blog("url3", "otsikko3", "kirjailija3", LocalDate.of(1998, 2, 2));
 
         dbc.add(b1);
         dbc.add(b2);
@@ -92,9 +97,9 @@ public class DbCommandsTest {
 
     @Test
     public void blogiaVoiHakeaKirjoittajanPerusteella() throws SQLException {
-        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", new Date(1996, 2, 2));
-        Blog b2 = new Blog("url2", "otsikko2", "kirjailija1", new Date(1997, 2, 2));
-        Blog b3 = new Blog("url3", "otsikko3", "kirjailija1", new Date(1998, 2, 2));
+        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", LocalDate.of(1996, 2, 2));
+        Blog b2 = new Blog("url2", "otsikko2", "kirjailija1", LocalDate.of(1997, 2, 2));
+        Blog b3 = new Blog("url3", "otsikko3", "kirjailija1", LocalDate.of(1998, 2, 2));
 
         dbc.add(b1);
         dbc.add(b2);
