@@ -1,5 +1,6 @@
 package ohtu;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
@@ -29,6 +30,9 @@ public class DbCommandsTest {
     public void tearDown() throws SQLException {
         dbc.removeTable("Books");
         dbc.removeTable("Youtube_links");
+        dbc.removeTable("Movies");
+        dbc.removeTable("Blogs");
+
     }
 
     @Test
@@ -71,6 +75,59 @@ public class DbCommandsTest {
         dbc.add(b3);
 
         assertEquals(dbc.searchBook("kirjailija").size(), 3);
+    }
+
+    @Test
+    public void blogiaVoiHakeaNimenPerusteella() throws SQLException {
+        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", new Date(1996, 2, 2));
+        Blog b2 = new Blog("url2", "otsikko2", "kirjailija2", new Date(1997, 2, 2));
+        Blog b3 = new Blog("url3", "otsikko3", "kirjailija3", new Date(1998, 2, 2));
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertTrue(new ReflectionEquals(dbc.searchBlog("otsikko1").get(0)).matches(b1));
+    }
+
+    @Test
+    public void blogiaVoiHakeaKirjoittajanPerusteella() throws SQLException {
+        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", new Date(1996, 2, 2));
+        Blog b2 = new Blog("url2", "otsikko2", "kirjailija1", new Date(1997, 2, 2));
+        Blog b3 = new Blog("url3", "otsikko3", "kirjailija1", new Date(1998, 2, 2));
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertEquals(dbc.searchBlog("kirjailija1").size(), 3);
+    }
+
+    @Test
+    public void elokuvaaVoiHakeaNimenPerusteella() throws SQLException {
+        Movie m1 = new Movie("nimi1", "David Lynch", 2001, 2);
+        Movie m2 = new Movie("nimi2", "David Lynch", 2002, 3);
+        Movie m3 = new Movie("nimi3", "David Lynch", 2003, 2);
+
+        dbc.add(m1);
+        dbc.add(m2);
+        dbc.add(m3);
+
+        assertTrue(new ReflectionEquals(dbc.searchMovie("nimi1").get(0)).matches(m1));
+    }
+
+    @Test
+    public void elokuvaaVoiHakeaOhjaajanPerusteella() throws SQLException {
+        Movie m1 = new Movie("nimi1", "David Lynch", 2001, 2);
+        Movie m2 = new Movie("nimi2", "David Lynch", 2002, 3);
+        Movie m3 = new Movie("nimi3", "David Lynch", 2003, 2);
+
+        dbc.add(m1);
+        dbc.add(m2);
+        dbc.add(m3);
+
+        assertEquals(dbc.searchMovie("David Lynch").size(), 3);
+
     }
 
     @Test
