@@ -3,10 +3,17 @@ plugins {
     id 'jacoco'
     id 'checkstyle'
     id "com.github.johnrengelman.shadow" version "6.1.0"
+    id "java-library"
     // id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 mainClassName = 'ohtu.Main'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
 
 jar {
     manifest {
