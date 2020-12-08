@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import ohtu.utilities.InputUtils;
 
 /**
  * Class for the application UI
@@ -22,6 +23,7 @@ public class UserInterface {
 
     private final DbCommands db;
     private final BufferedReader br;
+    final InputUtils input;
 
     /**
      * Constructor
@@ -31,6 +33,7 @@ public class UserInterface {
     public UserInterface(String dbName) throws SQLException, ClassNotFoundException {
         br = new BufferedReader(new InputStreamReader(System.in));
         db = new DbCommands(dbName);
+        input = new InputUtils(br);
     }
 
     /**
@@ -42,30 +45,17 @@ public class UserInterface {
     protected UserInterface(BufferedReader br, DbCommands db) {
         this.br = br;
         this.db = db;
+        this.input = new InputUtils(this.br);
     }
 
     /**
      * Launches the application's command-line UI
      */
     public void commandLine() throws IOException, SQLException {
-        String help = "\nNumber or name of the command can be used."
-                + "\n0 - exit    | Exits the application"
-                + "\n1 - help    | Prints help"
-                + "\n2 - book    | Stores book"
-                + "\n3 - youtube | Stores YouTube link"
-                + "\n4 - blog    | Stores blog"
-                + "\n5 - movie   | Stores movie"
-                + "\n6 - list    | Lists suggestions from specified category"
-                + "\n7 - search  | Searches for specified suggestion"
-                + "\n8 - delete  | Deletes specified suggestion";
-
-        String categories = "Categories: book, youtube, blog, movie";
-
-        System.out.println(help);
 
         while (true) {
             String msg = "";
-
+            System.out.println(input.getCommands());
             System.out.println("\n\n\n\nEnter nothing to get help.");
             System.out.print("Command: ");
             String command = br.readLine();
@@ -79,37 +69,37 @@ public class UserInterface {
                 case "":
                 case "1":
                 case "help":
-                    msg = help;
+                    msg = input.getCommands();
                     break;
                 case "2":
                 case "book":
-                    msg = store(getBook());
+                    msg = store(input.getBook());
                     msg = msg.isEmpty() ? "Book added successfully!" : msg;
                     break;
                 case "3":
                 case "youtube":
-                    msg = store(getYoutube());
+                    msg = store(input.getYoutube());
                     msg = msg.isEmpty() ? "Youtube link added successfully!" : msg;
                     break;
                 case "4":
                 case "blog":
-                    msg = store(getBlog());
+                    msg = store(input.getBlog());
                     msg = msg.isEmpty() ? "Blog added successfully!" : msg;
                     break;
                 case "5":
                 case "movie":
-                    msg = store(getMovie());
+                    msg = store(input.getMovie());
                     msg = msg.isEmpty() ? "Movie added successfully!" : msg;
                     break;
                 case "6":
                 case "list":
-                    System.out.println(categories);
+                    System.out.println(input.getCategories());
                     System.out.print("Enter category to list: ");
                     msg = search(br.readLine(), "");
                     break;
                 case "7":
                 case "search":
-                    System.out.println(categories);
+                    System.out.println(input.getCategories());
                     System.out.print("Enter category: ");
                     String category = br.readLine();
                     System.out.print("Enter search term: ");
@@ -127,153 +117,6 @@ public class UserInterface {
             }
             System.out.println(msg);
         }
-    }
-
-    /**
-     * Gets the data from user for the book suggestion in command-line
-     *
-     * @return Book object or null
-     */
-    protected Book getBook() throws IOException {
-        System.out.println("Enter title*: ");
-        String title = br.readLine();
-        if (title.isBlank()) {
-            System.out.println("Title cannot be blank.");
-            return null;
-        }
-
-        System.out.println("Enter author*: ");
-        String author = br.readLine();
-        if (author.isBlank()) {
-            System.out.println("Author cannot be blank.");
-            return null;
-        }
-
-        System.out.println("Enter year: ");
-        int year = -1;
-        try {
-            year = Integer.parseInt(br.readLine());
-        } catch (NumberFormatException ignored) {
-        }
-
-        System.out.println("Enter pages: ");
-        int pages = -1;
-        try {
-            pages = Integer.parseInt(br.readLine());
-        } catch (NumberFormatException ignored) {
-        }
-
-        System.out.println("Enter ISBN: ");
-        String isbn = br.readLine();
-        if (isbn.isBlank()) {
-            isbn = "";
-        }
-
-        return new Book(title, author, year, pages, isbn);
-    }
-
-    /**
-     * Gets the data from user for the YouTube suggestion in command-line
-     *
-     * @return Youtube object or null
-     */
-    protected Youtube getYoutube() throws IOException {
-        System.out.println("Enter URL*: ");
-        String url = br.readLine();
-        if (url.isBlank()) {
-            System.out.println("URL cannot be blank.");
-            return null;
-        }
-
-        System.out.println("Enter title*: ");
-        String title = br.readLine();
-        if (title.isBlank()) {
-            title = "";
-        }
-
-        System.out.println("Enter description*: ");
-        String description = br.readLine();
-        if (description.isBlank()) {
-            description = "";
-        }
-
-        return new Youtube(url, title, description);
-    }
-
-    /**
-     * Gets the data from user for the Blog suggestion in command-line
-     *
-     * @return Blog object or null
-     */
-    protected Blog getBlog() throws IOException {
-        System.out.println("Enter URL*: ");
-        String url = br.readLine();
-        if (url.isBlank()) {
-            System.out.println("URL cannot be blank.");
-            return null;
-        }
-
-        System.out.println("Enter title*: ");
-        String title = br.readLine();
-        if (title.isBlank()) {
-            title = "";
-        }
-
-        System.out.println("Enter writer: ");
-        String writer = br.readLine();
-        if (writer.isBlank()) {
-            writer = "";
-        }
-
-        System.out.println("Enter date (year-month-day): ");
-        String dateInput = br.readLine();
-        LocalDate date;
-
-        if (dateInput.isBlank()) {
-            date = LocalDate.now();
-        } else {
-            List<Integer> dateArray = Arrays.stream(dateInput.split("-"))
-                    .map(Integer::parseInt).collect(Collectors.toList());
-            date = LocalDate.of(dateArray.get(0), dateArray.get(1), dateArray.get(2));
-        }
-
-        return new Blog(url, title, writer, date);
-    }
-
-    /**
-     * Gets the data from user for the Movie suggestion in command-line
-     *
-     * @return Movie object or null
-     */
-    protected Movie getMovie() throws IOException {
-        System.out.println("Enter title*: ");
-        String title = br.readLine();
-        if (title.isBlank()) {
-            System.out.println("Title cannot be blank.");
-            return null;
-        }
-
-        System.out.println("Enter director: ");
-        String director = br.readLine();
-        if (director.isBlank()) {
-            director = "";
-        }
-
-        System.out.println("Enter release year: ");
-        int year = -1;
-        try {
-            year = Integer.parseInt(br.readLine());
-        } catch (NumberFormatException ignored) {
-        }
-
-        System.out.println("Enter duration (min): ");
-        int duration = -1;
-        try {
-            duration = Integer.parseInt(br.readLine());
-        } catch (NumberFormatException ignored) {
-        }
-
-        return new Movie(title, director, year, duration);
     }
 
     /**

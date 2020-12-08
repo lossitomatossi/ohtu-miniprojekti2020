@@ -7,4 +7,5 @@
 <suppressions>
     <suppress files="ohtu.Main.java" checks="[a-zA-Z0-9]*"/>
     <suppress files="ohtu.userinterface.*.java" checks="[a-zA-Z0-9]*"/>
+    <suppress files="ohtu.utilities.InputUtils.java" checks="[a-zA-Z0-9]*"/>
 </suppressions>
