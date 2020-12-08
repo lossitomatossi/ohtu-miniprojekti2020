@@ -30,7 +30,7 @@ jacocoTestReport {
 	}
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: ['ohtu/Main.class'])
+			fileTree(dir: it, exclude: ['ohtu/Main.class','ohtu/DataLoader.class'])
         }))
     }
 }
