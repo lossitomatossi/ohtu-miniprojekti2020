@@ -17,3 +17,4 @@ production.db
 testing.db
 connection_test.db
 cucumber_test.db
+demo_database.db

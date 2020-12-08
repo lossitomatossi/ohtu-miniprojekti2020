@@ -1,0 +1,17 @@
+book;Refactoring;Martin Fowler;2018;448;978-0134757599
+book;The Art of Doing Science and Engineering;Richard W. Hamming;2020;432;978-1732265172
+book;Operating Systems;William Stallings;2017;800;978-0134670959
+book;Effective Cybersecurity;William Stallings;2018;800;978-0134772806
+book;Lean Software Development;Mary Poppendieck;2003;230;978-0321150783
+youtube;https://www.youtube.com/watch?v=TRcReyRYIMg;What is Scrum?;Scrum basics
+youtube;https://www.youtube.com/watch?v=2Vt7Ik8Ublw;Scrum in under 5 minutes;Scrum basics
+youtube;https://www.youtube.com/watch?v=s4thQcgLCqk;Scrum: How to do twice as much in half the time;Jeff Sutherland's TEDx Talk
+youtube;https://www.youtube.com/watch?v=6K4ljFZWgW8;The Future of Software Engineering;Mary Poppendieck's talk at GOTO 2016
+youtube;https://www.youtube.com/watch?v=cY_Old9bLhY;How Toyota Changed The Way We Make Things;Bloomberg's short docu about The Toyota Way
+movie;Matrix;The Wachowskis;1999;136
+movie;Bound;The Wachowskis;1996;109
+movie;Leon;Luc Besson;1994;110
+movie;Hunt for the Wilderpeople;Taika Waititi;2016;101
+movie;Jojo Rabbit;Taika Waititi;2019;108
+movie;The Imitation Game;Morten Tyldum;2014;114
+blog;https://bit.ly/2JKJ6X6;In 1974 Planarity was O(V) time and could...;William Gasarch;06/12/2020
