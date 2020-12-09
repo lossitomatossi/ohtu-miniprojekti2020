@@ -155,16 +155,16 @@ public class DbCommands {
 
             while (r.next()) {
                 Blog blog = new Blog(
-                    r.getString("url"),
-                    r.getString("title"),
-                    r.getString("writer"),
-                    r.getDate("date").toLocalDate()
+                        r.getString("url"),
+                        r.getString("title"),
+                        r.getString("writer"),
+                        r.getDate("date").toLocalDate()
                 );
                 blogs.add(blog);
             }
         } catch (Exception ignored) {
         }
-        
+
         return blogs;
     }
 
@@ -264,33 +264,33 @@ public class DbCommands {
     public boolean contains(Object o) throws SQLException {
         if (o instanceof Book) {
             return containsBook((Book) o);
-        }
-
-        if (o instanceof Youtube) {
+        } else if (o instanceof Youtube) {
             return containsYoutube((Youtube) o);
+        } else if (o instanceof Blog) {
+            return containsBlog((Blog) o);
+        } else {
+            return containsMovie((Movie) o);
         }
- 
-        return false;
     }
 
     protected boolean containsBook(Book b) throws SQLException {
         ArrayList<Book> books = searchBook(b.getTitle());
-        for (Book book : books) {
-            if (book.equals(b)) {
-                return true;
-            }
-        }
-        return false;
+        return books.contains(b);
     }
 
     protected boolean containsYoutube(Youtube yt) throws SQLException {
         ArrayList<Youtube> youtubeLinks = searchYoutube(yt.getTitle());
-        for (Youtube link : youtubeLinks) {
-            if (link.equals(yt)) {
-                return true;
-            }
-        }
-        return false;
+        return youtubeLinks.contains(yt);
+    }
+
+    protected boolean containsMovie(Movie m) throws SQLException {
+        ArrayList<Movie> movies = searchMovie(m.getTitle());
+        return movies.contains(m);
+    }
+
+    protected boolean containsBlog(Blog b) throws SQLException {
+        ArrayList<Blog> blogs = searchBlog(b.getTitle());
+        return blogs.contains(b);
     }
 
     public void closeDbConnection() throws SQLException {
