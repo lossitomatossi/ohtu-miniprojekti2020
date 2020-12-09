@@ -35,9 +35,9 @@ public class DbCommandsTest {
 
     @After
     public void tearDown() throws SQLException {
+        dbc.closeDbConnection();
         File dbFile = new File("testing.db");
         dbFile.delete();
-
     }
 
     @Test

@@ -101,15 +101,19 @@ public class UserInterface {
                 case "search":
                     System.out.println(input.getCategories());
                     System.out.print("Enter category: ");
-                    String category = br.readLine();
+                    String categorySearch = br.readLine();
                     System.out.print("Enter search term: ");
                     String searchTerm = br.readLine();
-                    msg = search(category, searchTerm);
+                    msg = search(categorySearch, searchTerm);
                     break;
                 case "8":
                 case "delete":
-                    // String searchTerm = br.readLine();
-                    // msg = delete(item);
+                    System.out.println(input.getCategories());
+                    System.out.print("Enter category: ");
+                    String categoryDelete = br.readLine();
+                    System.out.print("Enter the suggestion to be deleted: ");
+                    String toDelete = br.readLine();
+                    msg = search(categoryDelete, toDelete);
                     break;
                 default:
                     System.out.println(command.toLowerCase());
@@ -221,6 +225,35 @@ public class UserInterface {
         }
 
         return output.toString();
+    }
+
+    /**
+     * Deletes a suggestion
+     *
+     * @param category Object can be Book, Youtube, Blog, Movie
+     * @param searchTerm String used for searching
+     * @return String confirmation message
+     */
+    protected String delete(String category, String searchTerm) throws SQLException {
+        boolean deletion;
+
+        if (category.equalsIgnoreCase("book")) {
+            deletion = db.deleteBook(searchTerm);
+        } else if (category.equalsIgnoreCase("youtube")) {
+            deletion = db.deleteYoutube(searchTerm);
+        } else if (category.equalsIgnoreCase("movie")) {
+            deletion = db.deleteMovie(searchTerm);
+        } else if (category.equalsIgnoreCase("blog")) {
+            deletion = db.deleteBlog(searchTerm);
+        } else {
+            return "No such category.";
+        }
+
+        if (deletion) {
+            return "Suggestion deleted successfully!";
+        }
+
+        return "Nothing was deleted.";
     }
 
     /**

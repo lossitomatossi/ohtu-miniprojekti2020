@@ -1,7 +1,6 @@
 package ohtu.database;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import ohtu.domain.Blog;
@@ -177,12 +176,7 @@ public class DbCommands {
 
         p.executeUpdate();
 
-        if (rowCount("Books") < rows) {
-            return true;
-        }
-
-        return false;
-
+        return rowCount("Books") < rows;
     }
 
     public boolean deleteYoutube(String searchTerm) throws SQLException {
@@ -193,10 +187,7 @@ public class DbCommands {
 
         p.executeUpdate();
 
-        if (rowCount("Youtube_links") < rows) {
-            return true;
-        }
-        return false;
+        return rowCount("Youtube_links") < rows;
     }
 
     public boolean deleteBlog(String searchTerm) throws SQLException {
@@ -207,11 +198,7 @@ public class DbCommands {
 
         p.executeUpdate();
 
-        if (rowCount("Blogs") < rows) {
-            return true;
-        }
-        return false;
-
+        return rowCount("Blogs") < rows;
     }
 
     public boolean deleteMovie(String searchTerm) throws SQLException {
@@ -224,11 +211,7 @@ public class DbCommands {
 
         p.executeUpdate();
 
-        if (rowCount("Movies") < rows) {
-            return true;
-        }
-        return false;
-
+        return rowCount("Movies") < rows;
     }
 
     private int rowCount(String table) throws SQLException {
@@ -238,7 +221,6 @@ public class DbCommands {
         ResultSet r = p.executeQuery();
 
         return r.getInt(1);
-
     }
 
     public ArrayList<Book> searchBook(String searchTerm) throws SQLException {
