@@ -29,7 +29,7 @@ public class DataLoader {
         }
     }
 
-    private static ArrayList<String[]> readFile(String fileName) {
+    protected static ArrayList<String[]> readFile(String fileName) {
         ArrayList<String[]> lines = new ArrayList<>();
         try {
             Scanner reader = new Scanner(new File(fileName));
@@ -44,7 +44,7 @@ public class DataLoader {
         return lines;
     }
 
-    private static ArrayList<Object> recommendations(ArrayList<String[]> lines) throws ParseException {
+    protected static ArrayList<Object> recommendations(ArrayList<String[]> lines) throws ParseException {
         ArrayList<Object> lukuvinkit = new ArrayList<>();
         Object lukuvinkki;
         for (String[] inputs : lines) {
@@ -57,7 +57,7 @@ public class DataLoader {
         return lukuvinkit;
     }
 
-    private static Object parseRecommendation(String[] inputs) throws ParseException {
+    protected static Object parseRecommendation(String[] inputs) throws ParseException {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         switch (inputs[0]) {
             case "book":

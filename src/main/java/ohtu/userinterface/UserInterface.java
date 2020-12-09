@@ -231,7 +231,7 @@ public class UserInterface {
      * an error
      */
     protected String store(Object o) throws SQLException {
-        if (db.contains(o)) {
+        if (o != null && db.contains(o)) {
             return "The suggestion already exists.";
         }
 

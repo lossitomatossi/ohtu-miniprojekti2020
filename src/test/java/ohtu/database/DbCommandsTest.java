@@ -3,6 +3,7 @@ package ohtu.database;
 import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import ohtu.domain.Blog;
 import ohtu.domain.Book;
@@ -242,7 +243,7 @@ public class DbCommandsTest {
     }
 
     @Test
-    public void aiemminLisattyKirjaLoytyyTietokannasta() throws SQLException {
+    public void lisattyKirjaLoytyyTietokannasta() throws SQLException {
         Book b1 = new Book("kirja1", "kirjailija", 1950, 100, "isbn1");
         Book b2 = new Book("kirja2", "kirjailija", 1951, 101, "isbn2");
 
@@ -254,30 +255,69 @@ public class DbCommandsTest {
     }
 
     @Test
-    public void aiemminLisattyYoutubeLinkkiLoytyyTietokannasta() throws SQLException {
+    public void lisattyYoutubeLinkkiLoytyyTietokannasta() throws SQLException {
         Youtube yt = new Youtube("urli", "otsikko", "a");
 
         dbc.add(yt);
 
         assertTrue(dbc.contains(yt));
     }
+    
+    @Test
+    public void lisattyElokuvaLoytyyTietokannasta() throws SQLException {
+        Movie m = new Movie("Leon", "Luc Besson", 1994, 110);
+
+        dbc.add(m);
+
+        assertTrue(dbc.contains(m));
+    }
+
+    @Test
+    public void lisattyBlogiLoytyyTietokannasta() throws SQLException {
+        Blog b = new Blog("https://bit.ly/2JKJ6X6", "In 1974 Planarity was O(V) time and could...", "William Gasarch", LocalDate.parse("06/12/2020", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        dbc.add(b);
+
+        assertTrue(dbc.contains(b));
+    }
 
     @Test
     public void kirjaaJotaEiOleLisattyEiLoydyTietokannasta() throws SQLException {
         Book b1 = new Book("kirja1", "kirjailija", 1950, 100, "isbn1");
+        Book b2 = new Book("kirja2", "kirjailija", 1950, 100, "isbn2");
 
-        assertFalse(dbc.containsBook(b1));
+        dbc.add(b1);
+
+        assertFalse(dbc.containsBook(b2));
     }
 
     @Test
     public void youtubeLinkkiaJotaEiOleLisattyEiLoydyTietokannasta() throws SQLException {
         Youtube yt1 = new Youtube("urli", "otsikko", "a");
+        Youtube yt2 = new Youtube("urli2", "otsikko2", "a");
 
-        assertFalse(dbc.contains(yt1));
+        dbc.add(yt1);
+
+        assertFalse(dbc.contains(yt2));
     }
 
     @Test
-    public void tuntematontaLukuvinkkiaEiLoydyTietokannasta() throws SQLException {
-        assertFalse(dbc.contains(new Object()));
+    public void elokuvaaJotaEiOleLisattyEiLoydyTietokannasta() throws SQLException {
+        Movie m1 = new Movie("Leon", "Luc Besson", 1994, 110);
+        Movie m2 = new Movie("Jojo Rabbit", "Taika Waititi", 2019, 108);
+
+        dbc.add(m1);
+
+        assertFalse(dbc.contains(m2));
+    }
+
+    @Test
+    public void blogiaJotaEiOleLisattyEiLoydyTietokannasta() throws SQLException {
+        Blog b1 = new Blog("https://bit.ly/2JKJ6X6", "In 1974 Planarity was O(V) time and could...", "William Gasarch", LocalDate.parse("06/12/2020", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        Blog b2 = new Blog("https://bit.ly/2J5643C", "O(V) time", "William Hertz", LocalDate.parse("06/07/2015", DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+
+        dbc.add(b1);
+
+        assertFalse(dbc.contains(b2));
     }
 }
