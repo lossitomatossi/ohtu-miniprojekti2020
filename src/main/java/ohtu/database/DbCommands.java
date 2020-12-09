@@ -338,11 +338,8 @@ public class DbCommands {
         } else {
             return containsMovie((Movie) o);
         }
-<<<<<<< HEAD
 
-        return false;
-=======
->>>>>>> ad3730c3a0ca19ac6a25027fa646e577f68c265d
+
     }
 
     protected boolean containsBook(Book b) throws SQLException {
