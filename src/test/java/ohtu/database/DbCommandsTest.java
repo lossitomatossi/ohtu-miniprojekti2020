@@ -1,5 +1,6 @@
 package ohtu.database;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -33,10 +34,8 @@ public class DbCommandsTest {
 
     @After
     public void tearDown() throws SQLException {
-        dbc.removeTable("Books");
-        dbc.removeTable("Youtube_links");
-        dbc.removeTable("Movies");
-        dbc.removeTable("Blogs");
+        File dbFile = new File("testing.db");
+        dbFile.delete();
 
     }
 
@@ -80,6 +79,105 @@ public class DbCommandsTest {
         dbc.add(b3);
 
         assertEquals(dbc.searchBook("kirjailija").size(), 3);
+    }
+
+    @Test
+    public void kirjanVoiPoistaa() throws SQLException {
+        Book b1 = new Book("kirja1", "kirjailija", 1996, 100, "isbn1");
+        Book b2 = new Book("kirja2", "kirjailija2", 1997, 101, "isbn2");
+        Book b3 = new Book("kirja3", "kirjailija3", 1998, 102, "isbn3");
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertTrue(dbc.deleteBook("kirja1"));
+
+    }
+
+    @Test
+    public void olemattomankirjanPoistaminenPalauttaaFalse() throws SQLException {
+        Book b1 = new Book("kirja1", "kirjailija", 1996, 100, "isbn1");
+        Book b2 = new Book("kirja2", "kirjailija2", 1997, 101, "isbn2");
+        Book b3 = new Book("kirja3", "kirjailija3", 1998, 102, "isbn3");
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertFalse(dbc.deleteBook("kirjaa"));
+
+    }
+
+    @Test
+    public void youtubeLinkinVoiPoistaa() throws SQLException {
+        Youtube yt = new Youtube("aaa", "title", "bbb");
+        dbc.add(yt);
+
+        assertTrue(dbc.deleteYoutube("title"));
+
+    }
+
+    @Test
+    public void olemattomanYoutubeLinkinPoistaminenPalauttaaFalse() throws SQLException {
+        Youtube yt = new Youtube("aaa", "title", "bbb");
+        dbc.add(yt);
+
+        assertFalse(dbc.deleteYoutube("tittle"));
+
+    }
+
+    @Test
+    public void bloginVoiPoistaa() throws SQLException {
+        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", LocalDate.of(1996, 2, 2));
+        Blog b2 = new Blog("url2", "otsikko2", "kirjailija2", LocalDate.of(1997, 2, 2));
+        Blog b3 = new Blog("url3", "otsikko3", "kirjailija3", LocalDate.of(1998, 2, 2));
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+
+        assertTrue(dbc.deleteBlog("otsikko1"));
+
+    }
+
+    @Test
+    public void olemattomanBloginPoistaminenPalauttaaFalse() throws SQLException {
+        Blog b1 = new Blog("url1", "otsikko1", "kirjailija1", LocalDate.of(1996, 2, 2));
+        Blog b2 = new Blog("url2", "otsikko2", "kirjailija2", LocalDate.of(1997, 2, 2));
+        Blog b3 = new Blog("url3", "otsikko3", "kirjailija3", LocalDate.of(1998, 2, 2));
+
+        dbc.add(b1);
+        dbc.add(b2);
+        dbc.add(b3);
+        assertFalse(dbc.deleteBlog("tittle"));
+
+    }
+
+    @Test
+    public void elokuvanVoiPoistaa() throws SQLException {
+        Movie m1 = new Movie("nimi1", "David Lynch", 2001, 2);
+        Movie m2 = new Movie("nimi2", "David Lynch", 2002, 3);
+        Movie m3 = new Movie("nimi3", "David Lynch", 2003, 2);
+
+        dbc.add(m1);
+        dbc.add(m2);
+        dbc.add(m3);
+        assertTrue(dbc.deleteMovie("nimi2"));
+
+    }
+
+    @Test
+    public void olemattonmanElokuvanPoistaminenPalauttaaFalse() throws SQLException {
+        Movie m1 = new Movie("nimi1", "David Lynch", 2001, 2);
+        Movie m2 = new Movie("nimi2", "David Lynch", 2002, 3);
+        Movie m3 = new Movie("nimi3", "David Lynch", 2003, 2);
+
+        dbc.add(m1);
+        dbc.add(m2);
+        dbc.add(m3);
+        assertFalse(dbc.deleteMovie("tittle"));
+
     }
 
     @Test
