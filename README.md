@@ -22,6 +22,6 @@ Komennolla `gradlew test jacocoTestReport`, jonka tulokset löytyvät avaamalla 
 Komennolla `gradlew checkstyleMain`, jonka tulokset löytyvät avaamalla `build/reports/checkstyle/main.html` selaimeen.
 
 ### JAR-tiedoston luominen
-Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build\libs\lukuvinkkikirjasto-all.jar`.
+Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build/libs/lukuvinkkikirjasto-all.jar`.
 
 
