@@ -56,7 +56,7 @@ public class UserInterface {
         while (true) {
             String msg = "";
             System.out.println(input.getCommands());
-            System.out.println("\n\n\n\nEnter nothing to get help.");
+            System.out.println("\n\nEnter nothing to get help.");
             System.out.print("Command: ");
             String command = br.readLine();
 
@@ -113,7 +113,7 @@ public class UserInterface {
                     String categoryDelete = br.readLine();
                     System.out.print("Enter the suggestion to be deleted: ");
                     String toDelete = br.readLine();
-                    msg = search(categoryDelete, toDelete);
+                    msg = delete(categoryDelete, toDelete);
                     break;
                 default:
                     System.out.println(command.toLowerCase());
