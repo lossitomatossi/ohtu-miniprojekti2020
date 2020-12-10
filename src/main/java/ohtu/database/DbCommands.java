@@ -166,6 +166,20 @@ public class DbCommands {
     public ArrayList<Movie> listMovie() {
         ArrayList<Movie> movies = new ArrayList<>();
 
+        try {
+            ResultSet r = s.executeQuery("SELECT * FROM Movies");
+
+            while (r.next()) {
+                Movie movie = new Movie(
+                        r.getString("title"),
+                        r.getString("director"),
+                        r.getInt("year"),
+                        r.getInt("length"));
+                movies.add(movie);
+            }
+        } catch (Exception ignored) {
+        }
+
         return movies;
     }
 
