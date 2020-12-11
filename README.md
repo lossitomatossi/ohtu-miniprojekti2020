@@ -27,7 +27,8 @@ Komennolla `gradlew checkstyleMain`, jonka tulokset löytyvät avaamalla `build/
 Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build/libs/lukuvinkkikirjasto-all.jar`.
 
 ### Jar tiedoston ajaminen
-Jar-tiedoston luomisen jälkeen ohjelman voi ajaa komennolla ``java -jar build/libs/lukuvinkkikirjasto-all.jar``
+Jar-tiedoston luomisen jälkeen ohjelman voi ajaa komennolla ``java -jar build/libs/lukuvinkkikirjasto-all.jar``.
+Antamalla optio `demo` komentoriviargumenttina, alustetaan tietokanta hakemistosta `data/demo` löytyvillä lukuvinkeillä.
 
 ### Ohjelman käynnistäminen Gradlella
 Käynnistys tapahtuu komennolla `gradlew run`
