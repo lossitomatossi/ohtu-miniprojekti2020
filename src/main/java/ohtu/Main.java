@@ -1,7 +1,7 @@
 package ohtu;
 
 import ohtu.utilities.DataLoader;
-import ohtu.userinterface.UserInterface;
+import ohtu.userinterface.TextUI;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) throws IOException, SQLException, ClassNotFoundException, ParseException {
         String database = "production.db";
         handleArguments(args, database);
-        UserInterface app = new UserInterface("jdbc:sqlite:" + database);
+        TextUI app = new TextUI("jdbc:sqlite:" + database);
         app.commandLine();
     }
 

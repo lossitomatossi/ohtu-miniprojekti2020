@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import org.mockito.Mockito;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 
-public class UserInterfaceTest {
+public class TextUITest {
 
     final PrintStream standardOut = System.out;
     final String testDatabase = "testing.db";
@@ -41,7 +41,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("halp", "exit");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
         app.commandLine();
 
         String actualOutput = output.toString();
@@ -55,7 +55,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("Ayy", "Wizard", "1995", "250", "ABC1");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
         
         Book actual = app.input.getBook();
         Book expected = new Book("Ayy", "Wizard", 1995, 250, "ABC1");
@@ -68,7 +68,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("https://youtu.be/placeholder", "Cat video", "Watch soon!");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
 
         Youtube actual = app.input.getYoutube();
         Youtube expected = new Youtube("https://youtu.be/placeholder", "Cat video", "Watch soon!");
@@ -85,7 +85,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("Matrix", "The Wachowskis", "1995", "136");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
 
         Movie actual = app.input.getMovie();
         Movie expected = new Movie("Matrix", "The Wachowskis", 1995, 136);
@@ -98,7 +98,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("https://example.com", "Blog title", "Suzuki", "2020-2-2");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
 
         Blog actual = app.input.getBlog();
         Blog expected = new Blog("https://example.com", "Blog title", "Suzuki", LocalDate.of(2020, 2, 2));
@@ -114,7 +114,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("", "Wizard", "1995", "250", "ABC1");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
         app.input.getBook();
 
         String actualOutput = output.toString();
@@ -133,7 +133,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("list", "book", "list", "youtube", "exit");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
         app.store(b);
         app.store(yt);
         app.commandLine();
@@ -154,7 +154,7 @@ public class UserInterfaceTest {
         BufferedReader br = Mockito.mock(BufferedReader.class);
         Mockito.when(br.readLine()).thenReturn("search", "youtube", "scrum", "exit");
 
-        UserInterface app = new UserInterface(br, dbc);
+        TextUI app = new TextUI(br, dbc);
         app.store(yt);
         app.commandLine();
 

@@ -11,6 +11,9 @@ import ohtu.domain.Book;
 import ohtu.domain.Movie;
 import ohtu.domain.Youtube;
 
+/**
+ * Utilities used in the user interface
+ */
 public class InputUtils {
 
     private final BufferedReader br;
@@ -19,6 +22,11 @@ public class InputUtils {
         this.br = br;
     }
 
+    /**
+     * List of all commands
+     *
+     * @return String list of commands
+     */
     public String getCommands(){
         return "\nNumber or name of the command can be used."
                 + "\n0 - exit    | Exits the application"

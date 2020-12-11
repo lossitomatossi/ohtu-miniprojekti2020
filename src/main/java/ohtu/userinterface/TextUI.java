@@ -10,16 +10,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import ohtu.utilities.InputUtils;
 
 /**
- * Class for the application UI
+ * Text UI for the application
  */
-public class UserInterface {
+public class TextUI {
 
     private final DbCommands db;
     private final BufferedReader br;
@@ -30,7 +27,7 @@ public class UserInterface {
      *
      * @param dbName Database name for production
      */
-    public UserInterface(String dbName) throws SQLException, ClassNotFoundException {
+    public TextUI(String dbName) throws SQLException, ClassNotFoundException {
         br = new BufferedReader(new InputStreamReader(System.in));
         db = new DbCommands(dbName);
         input = new InputUtils(br);
@@ -42,7 +39,7 @@ public class UserInterface {
      * @param br Mock command-line reader
      * @param db Test database manager
      */
-    protected UserInterface(BufferedReader br, DbCommands db) {
+    protected TextUI(BufferedReader br, DbCommands db) {
         this.br = br;
         this.db = db;
         this.input = new InputUtils(this.br);
@@ -257,11 +254,10 @@ public class UserInterface {
     }
 
     /**
-     * Stores the object (Book, Youtube) to the database
+     * Stores the suggestion to the database
      *
-     * @param o Object can be Book or Youtube
-     * @return String empty string if storing object was successful, otherwise
-     * an error
+     * @param o Object Book, Youtube, Blog, Movie
+     * @return String empty string if storing object was successful, otherwise an error
      */
     protected String store(Object o) throws SQLException {
         if (o != null && db.contains(o)) {

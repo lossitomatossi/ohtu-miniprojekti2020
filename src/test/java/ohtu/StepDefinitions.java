@@ -1,7 +1,7 @@
 package ohtu;
 
 import ohtu.database.DbCommands;
-import ohtu.userinterface.UserInterface;
+import ohtu.userinterface.TextUI;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -294,7 +294,7 @@ public class StepDefinitions {
 
     // Helper methods
     private void runApp() throws IOException, SQLException, ClassNotFoundException {
-        UserInterface app = new UserInterface(br, dbc) {
+        TextUI app = new TextUI(br, dbc) {
         };
         app.commandLine();
     }
