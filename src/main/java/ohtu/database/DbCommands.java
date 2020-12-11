@@ -362,15 +362,15 @@ public class DbCommands {
         db.close();
     }
     
-    public boolean editBook(Book b, Book former) throws SQLException {
+    public boolean editBook(Book editedBook, Book former) throws SQLException {
         try {
             PreparedStatement p = db.prepareStatement("UPDATE Books SET name = ?, writer = ?, year = ?, pages = ?, isbn = ? WHERE name LIKE ? OR writer LIKE ?");
 
-            p.setString(1, b.getTitle());
-            p.setString(2, b.getAuthor());
-            p.setInt(3, b.getYear());
-            p.setInt(4, b.getPages());
-            p.setString(5, b.getIsbn());
+            p.setString(1, editedBook.getTitle());
+            p.setString(2, editedBook.getAuthor());
+            p.setInt(3, editedBook.getYear());
+            p.setInt(4, editedBook.getPages());
+            p.setString(5, editedBook.getIsbn());
             p.setString(6, former.getTitle());
             p.setString(7, former.getAuthor());
 
