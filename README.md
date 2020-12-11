@@ -24,4 +24,3 @@ Komennolla `gradlew checkstyleMain`, jonka tulokset löytyvät avaamalla `build/
 ### JAR-tiedoston luominen
 Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build/libs/lukuvinkkikirjasto-all.jar`.
 
-
