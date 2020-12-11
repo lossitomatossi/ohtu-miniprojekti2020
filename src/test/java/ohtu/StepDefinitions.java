@@ -82,6 +82,11 @@ public class StepDefinitions {
     public void commandDeleteSelected() throws IOException {
         inputs.put("commandDelete", "delete");
     }
+    
+    @Given("command edit is selected")
+    public void commandEditSelected() throws IOException {
+        inputs.put("commandEdit", "edit");
+    }
 
     @When("user lists books")
     public void userListsBooks() throws IOException, SQLException, ClassNotFoundException {
@@ -390,6 +395,22 @@ public class StepDefinitions {
                 .thenReturn(inputs.get("commandDelete"))
                 .thenReturn(category)
                 .thenReturn(deleteTerm)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+    
+    @When("user enters category {string} and edit term {string} and new title {string} and same writer {string}")
+    public void userEntersCategoryAndEditTerm(String category, String editTerm, String newTitle, String writer) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandEdit"))
+                .thenReturn(category)
+                .thenReturn(editTerm)
+                .thenReturn("yes")
+                .thenReturn(newTitle)
+                .thenReturn(writer)
+                .thenReturn("2")
+                .thenReturn("234")
+                .thenReturn("234")
                 .thenReturn(inputs.get("commandExit"));
         runApp();
     }
