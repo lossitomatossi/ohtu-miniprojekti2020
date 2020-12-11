@@ -57,6 +57,16 @@ public class StepDefinitions {
         inputs.put("commandYoutube", "youtube");
 
     }
+    
+    @Given("command blog is selected")
+    public void commandBlogSelected() throws IOException {
+        inputs.put("commandBlog", "blog");
+    }
+    
+    @Given("command movie is selected")
+    public void commandMovieSelected() throws IOException {
+        inputs.put("commandMovie", "movie");
+    }
 
     @Given("command search is selected")
     public void commandSearchSelected() throws IOException {
@@ -67,12 +77,35 @@ public class StepDefinitions {
     public void commandListSelected() throws IOException {
         inputs.put("commandList", "list");
     }
+    
+    @Given("command delete is selected")
+    public void commandDeleteSelected() throws IOException {
+        inputs.put("commandDelete", "delete");
+    }
 
     @When("user lists books")
     public void userListsBooks() throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandList"))
                 .thenReturn("book")
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+    
+    @When("user lists blogs")
+    public void userListsBlogs() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandList"))
+                .thenReturn("blog")
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+    
+    @When("user lists movies")
+    public void userListsMovies() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandList"))
+                .thenReturn("movie")
                 .thenReturn(inputs.get("commandExit"));
         runApp();
     }
@@ -164,15 +197,7 @@ public class StepDefinitions {
         runApp();
     }
 
-    @When("user enters category {string} and search term {string}")
-    public void userEntersSearchTerm(String category, String term) throws IOException, SQLException, ClassNotFoundException {
-        when(br.readLine())
-                .thenReturn("search")
-                .thenReturn(category)
-                .thenReturn(term)
-                .thenReturn(inputs.get("commandExit"));
-        runApp();
-    }
+    
 
     @Given("book {string} by writer {string} is successfully added on the list")
     public void bookIsSuccessfullyAddedOnTheList(String title, String writer) throws IOException, SQLException, ClassNotFoundException {
@@ -188,6 +213,37 @@ public class StepDefinitions {
         runApp();
 
         assertTrue(outputStreamCaptor.toString().contains("Book added successfully!"));
+    }
+    
+    @Given("blog {string} title {string} is successfully added on the list")
+    public void blogIsSuccessfullyAddedOnTheList(String title, String writer) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn("blog")
+                .thenReturn(title)
+                .thenReturn(writer)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+
+        assertTrue(outputStreamCaptor.toString().contains("Blog added successfully!"));
+    }
+    
+    @Given("movie {string} is successfully added on the list")
+    public void movieIsSuccessfullyAddedOnTheList(String title) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn("movie")
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+
+        assertTrue(outputStreamCaptor.toString().contains("Movie added successfully!"));
     }
 
     @Given("youtube url {string} with title {string} is successfully added on the list")
@@ -217,6 +273,33 @@ public class StepDefinitions {
 
         runApp();
     }
+    
+    @When("user enters blog url {string} and title {string}")
+    public void userEntersBlogTitleAndWriter(String url, String title) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandBlog"))
+                .thenReturn(url)
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+    }
+    
+    @When("user enters movie title {string}")
+    public void userEntersBlogTitleAndWriter(String title) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandMovie"))
+                .thenReturn(title)
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+    }
 
     @When("user enters youtube url {string} and title {string}")
     public void userEntersYoutubeURLAndTitle(String url, String title) throws IOException, SQLException, ClassNotFoundException {
@@ -239,11 +322,31 @@ public class StepDefinitions {
 
         runApp();
     }
+    
+    @When("user leaves movie title blank")
+    public void userLeavesMovieTitleBlank() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandMovie"))
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+    }
 
     @When("user leaves youtube url blank")
     public void userLeavesURLBlank() throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandYoutube"))
+                .thenReturn("")
+                .thenReturn(inputs.get("commandExit"));
+
+        runApp();
+    }
+    
+    @When("user leaves blog url blank")
+    public void userLBlogURLBlank() throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandBlog"))
                 .thenReturn("")
                 .thenReturn(inputs.get("commandExit"));
 
@@ -270,12 +373,23 @@ public class StepDefinitions {
         runApp();
     }
 
-    @When("user enters category {string} and searchTerm {string}")
+    @When("user enters category {string} and search term {string}")
     public void userEntersCategoryAndSearchTerm(String category, String searchTerm) throws IOException, SQLException, ClassNotFoundException {
         when(br.readLine())
                 .thenReturn(inputs.get("commandSearch"))
                 .thenReturn(category)
                 .thenReturn(searchTerm)
+                .thenReturn(inputs.get("commandExit"));
+        runApp();
+    }
+    
+    
+    @When("user enters category {string} and delete term {string}")
+    public void userEntersCategoryAndDeleteTerm(String category, String deleteTerm) throws IOException, SQLException, ClassNotFoundException {
+        when(br.readLine())
+                .thenReturn(inputs.get("commandDelete"))
+                .thenReturn(category)
+                .thenReturn(deleteTerm)
                 .thenReturn(inputs.get("commandExit"));
         runApp();
     }
@@ -291,7 +405,18 @@ public class StepDefinitions {
         assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
 
     }
+    @Then("system will respond with {string} and {string}")
+    public void systemWillRespondWithTwo(String expectedOutput, String expectedOutputTwo) {
+        //For debugging
+        System.setOut(standardOut);
+        System.out.println("****");
+        System.out.println("****");
+        System.out.println(outputStreamCaptor.toString());
+        System.out.println("****");
+        assertTrue(outputStreamCaptor.toString().contains(expectedOutput));
+        assertTrue(outputStreamCaptor.toString().contains(expectedOutputTwo));
 
+    }
     // Helper methods
     private void runApp() throws IOException, SQLException, ClassNotFoundException {
         TextUI app = new TextUI(br, dbc) {

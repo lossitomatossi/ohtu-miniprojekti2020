@@ -180,6 +180,10 @@ public class TextUI {
                     .append("Description").append("\n");
         } else if (category.equalsIgnoreCase("movie")) {
             results = searchTerm.isEmpty() ? db.listMovie() : db.searchMovie(searchTerm);
+            
+            if (results.isEmpty()) {
+                return "Nothing found.";
+            }
 
             for (Object o : results) {
                 lengths[0] = Math.max(((Movie) o).getTitle().length(), lengths[0]);
@@ -197,6 +201,10 @@ public class TextUI {
                     .append("Length (min)").append("\n");
         } else if (category.equalsIgnoreCase("blog")) {
             results = searchTerm.isEmpty() ? db.listBlog() : db.searchBlog(searchTerm);
+            
+            if (results.isEmpty()) {
+                return "Nothing found.";
+            }
 
             for (Object o : results) {
                 lengths[0] = Math.max(((Blog) o).getUrl().length(), lengths[0]);
