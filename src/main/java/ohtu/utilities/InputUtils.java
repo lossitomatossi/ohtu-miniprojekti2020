@@ -223,7 +223,7 @@ public class InputUtils {
             }
         }
 
-        return new Book("title", "author", 0, 0, "ISBN");
+        return new Book("EditedFakeTitle", "EditingFakeAuthor", 0, 0, "ISBN");
     }
 
 }

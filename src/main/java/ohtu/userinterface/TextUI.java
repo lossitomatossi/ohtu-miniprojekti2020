@@ -302,15 +302,16 @@ public class TextUI {
                             + "(yes/no/enter to leave) \n"
                             + former);
                     Book editedBook = input.editBook(category, editTerm);
-                    boolean editedInDB = db.editBook(editedBook, former);
-                    if (editedInDB) {
+                    if (!editedBook.getAuthor().equals("EditingFakeAuthor")
+                            && !editedBook.getTitle().equals("EditedFakeTitle")) {
+                        boolean editedInDB = db.editBook(editedBook, former);
                         System.out.println("Was: \n" + former);
                         System.out.println("is now: \n" + editedBook);
                     } else {
                         System.out.println("Changes discarded");
                     }                           
                 } catch (Exception e) {
-                    System.out.println("No such book found");
+                    System.out.println("Something went wrong, changes discarded");
                 }
             } else {
                 System.out.println("No search term given");
