@@ -12,6 +12,8 @@
 
 [Google sheets](https://docs.google.com/spreadsheets/d/1sGVq349mKmRQ_noFouEtAV1N4oND8W4fjCAEKfueNR4/edit?usp=sharing)
 
+## Kaikki gradlen komennot alkavat joko `gradlew` tai `./gradle`
+
 ### Testit
 Komennolla `gradlew test`.
 
@@ -24,3 +26,8 @@ Komennolla `gradlew checkstyleMain`, jonka tulokset löytyvät avaamalla `build/
 ### JAR-tiedoston luominen
 Komennolla `gradlew shadowJar`. Luotu JAR löytyy kansiosta `build/libs/lukuvinkkikirjasto-all.jar`.
 
+### Jar tiedoston ajaminen
+Jar-tiedoston luomisen jälkeen ohjelman voi ajaa komennolla ``java -jar build/libs/lukuvinkkikirjasto-all.jar``
+
+### Ohjelman käynnistäminen Gradlella
+Käynnistys tapahtuu komennolla `gradlew run`
