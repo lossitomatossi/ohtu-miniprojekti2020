@@ -37,7 +37,8 @@ public class InputUtils {
                 + "\n5 - movie   | Stores movie"
                 + "\n6 - list    | Lists suggestions from specified category"
                 + "\n7 - search  | Searches for specified suggestion"
-                + "\n8 - delete  | Deletes specified suggestion";
+                + "\n8 - delete  | Deletes specified suggestion"
+                + "\n9 - edit    | Edit an item based on category";
     }
     
     public String getCategories(){
@@ -196,6 +197,33 @@ public class InputUtils {
         }
 
         return new Movie(title, director, year, duration);
+    }
+    
+    public Book editBook(String categoryEdit, String editTerm) throws IOException {
+        boolean loop = true;
+        while (loop) {
+            String rightItem = br.readLine();
+            if (rightItem.isEmpty()) {
+                System.out.println("Pressed enter or invalid command, exiting edit mode");
+                break;
+            }
+            switch (rightItem.toLowerCase()) {
+                case "yes":
+                case "y":
+                    Book edited = getBook();
+                    return edited;
+                case "no":
+                case "n":
+                    System.out.println("Not the right book, exiting edit mode");
+                    loop = false;
+                    break;
+                default:
+                    System.out.println("Exiting edit mode");
+                    break;
+            }
+        }
+
+        return new Book("title", "author", 0, 0, "ISBN");
     }
 
 }

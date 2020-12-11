@@ -112,6 +112,14 @@ public class TextUI {
                     String toDelete = br.readLine();
                     msg = delete(categoryDelete, toDelete);
                     break;
+                case "9":
+                case "edit":
+                    System.out.println("Editable categories: book");
+//                    System.out.println(input.getCategories());
+                    System.out.println("Enter category from which you want to edit saved items: ");
+                    String categoryEdit = br.readLine();
+                    edit(categoryEdit);
+                    break;
                 default:
                     System.out.println(command.toLowerCase());
                     System.out.println("No such command exists. Enter 'help' to get help.");
@@ -231,6 +239,8 @@ public class TextUI {
 
         return output.toString();
     }
+    
+    
 
     /**
      * Deletes a suggestion
@@ -277,5 +287,44 @@ public class TextUI {
             return "";
         }
         return "An unknown error has occurred.";
+    }
+    
+    protected void edit(String category) throws SQLException, IOException {
+        if (category.equalsIgnoreCase("book")) {
+            System.out.println(search(category, ""));
+            System.out.println("Which item would you like to edit?");
+            String editTerm = br.readLine();
+            if (!editTerm.isEmpty()) {
+            Book former;
+                try {
+                    former = db.searchBook(editTerm).get(0);
+                    System.out.println("Is this what you want to edit? "
+                            + "(yes/no/enter to leave) \n"
+                            + former);
+                    Book editedBook = input.editBook(category, editTerm);
+                    boolean editedInDB = db.editBook(editedBook, former);
+                    if (editedInDB) {
+                        System.out.println("Was: \n" + former);
+                        System.out.println("is now: \n" + editedBook);
+                    } else {
+                        System.out.println("Changes discarded");
+                    }                           
+                } catch (Exception e) {
+                    System.out.println("No such book found");
+                }
+            } else {
+                System.out.println("No search term given");
+            }
+        } else if (category.equalsIgnoreCase("youtube")) {
+            System.out.println("Not supported");
+        } else if (category.equalsIgnoreCase("movie")) {
+            System.out.println("Not supported");
+        } else if (category.equalsIgnoreCase("blog")) {
+            System.out.println("Not supported");
+        } else {
+            System.out.println("No such category.");
+        }
+        
+        
     }
 }

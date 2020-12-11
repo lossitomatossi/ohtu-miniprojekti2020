@@ -320,4 +320,24 @@ public class DbCommandsTest {
 
         assertFalse(dbc.contains(b2));
     }
+    
+    @Test
+    public void olemassaOlevaaKirjaaVoiMuokata() throws SQLException {
+        Book b1 = new Book("kirja1", "kirjailija", 1950, 100, "isbn1");
+        dbc.add(b1);
+        Book b2 = new Book("kirja2", "kirjailija2", 1950, 100, "isbn2");
+        assertFalse(dbc.containsBook(b2));
+        dbc.editBook(b2, b1);
+        assertTrue(dbc.containsBook(b2));
+    }
+    
+    @Test
+    public void olematontaKirjaaEiVoiMuokata() throws SQLException {
+        Book b1 = new Book("kirja1", "kirjailija", 1950, 100, "isbn1");
+        Book b2 = new Book("kirja2", "kirjailija2", 1950, 100, "isbn2");
+        assertFalse(dbc.containsBook(b1));
+        dbc.editBook(b2, b1);
+        assertFalse(dbc.containsBook(b2));
+        assertFalse(dbc.containsBook(b1));
+    }
 }

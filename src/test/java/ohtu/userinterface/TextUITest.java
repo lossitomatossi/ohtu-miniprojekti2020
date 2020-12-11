@@ -190,4 +190,116 @@ public class TextUITest {
         String msg = new File(testDatabase).delete() ? "" + testDatabase + " deleted succesfully" : "Failed to delete " + testDatabase;
         //System.out.println("***\n" + msg + "\n***");
     }
+    
+    @Test
+    public void printedBooksWhenEditingBooks() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "book", "no", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        Book b = new Book("Refactoring", "Martin Fowler", 2018, 448, "978-0134757599");
+        app.store(b);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("Refactoring          Martin Fowler        2018   448     978-0134757599"));
+    }
+    
+    @Test
+    public void cantEditYoutubeLinks() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "youtube", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("Not supported"));
+    }
+    
+    @Test
+    public void cantEditBlogs() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "blog", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("Not supported"));
+    }
+    
+    @Test
+    public void cantEditMovies() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "movie", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("Not supported"));
+    }
+    
+    @Test
+    public void cantEditNonExistentCategory() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "nonexistent", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("No such category."));
+    }
+    
+    @Test
+    public void cantEditWithoutConfirmation() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "book", "", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        Book b = new Book("Refactoring", "Martin Fowler", 2018, 448, "978-0134757599");
+        app.store(b);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("No search term given"));
+    }
+    
+    @Test
+    public void printedConfirmationWhenEditingBooks() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+        
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("edit", "book", "Refactoring", "no", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        Book b = new Book("Refactoring", "Martin Fowler", 2018, 448, "978-0134757599");
+        app.store(b);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+        assertTrue(actualOutput.contains("want to edit?"));
+    }
 }
+
