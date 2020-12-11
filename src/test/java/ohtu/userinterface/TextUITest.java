@@ -163,6 +163,26 @@ public class TextUITest {
         assertTrue(actualOutput.contains("https://www.youtube.com/watch?v=TRcReyRYIMg What is Scrum?       " + yt.getDate() + " "));
     }
 
+    @Test
+    public void correctSuggestionDeleted() throws IOException, SQLException, ClassNotFoundException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
+
+        Book b = new Book("Refactoring", "Martin Fowler", 2018, 448, "978-0134757599");
+
+        BufferedReader br = Mockito.mock(BufferedReader.class);
+        Mockito.when(br.readLine()).thenReturn("delete", "book", "Refactoring", "list", "book", "exit");
+
+        TextUI app = new TextUI(br, dbc);
+        app.store(b);
+        app.commandLine();
+
+        String actualOutput = output.toString();
+
+        assertTrue(dbc.listBook().isEmpty());
+        assertTrue(actualOutput.contains("Nothing found."));
+    }
+
     @After
     public void returnSystem() throws SQLException {
         System.setOut(standardOut);
