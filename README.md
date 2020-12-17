@@ -12,6 +12,8 @@
 
 [Google sheets](https://docs.google.com/spreadsheets/d/1sGVq349mKmRQ_noFouEtAV1N4oND8W4fjCAEKfueNR4/edit?usp=sharing)
 
+[Loppuraportti](https://docs.google.com/document/d/e/2PACX-1vTvUWiSQva0L9YKNV4G6JHscuy2s99OFMVhazgCQBUbb3_Zu_6mSNgdxHZpzsD228sc55bxiMhlvu26/pub)
+
 ## Kaikki gradlen komennot alkavat joko `gradlew` tai `./gradle`
 
 ### Testit
